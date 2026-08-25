@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CtaBanner from '../../components/CtaBanner.astro';
 import ServicioIcono from '../../components/ServicioIcono.astro';
 import { servicios } from '../../data/servicios';
+import { servicioLd, migas } from '../../data/seo';
 
 export function getStaticPaths() {
   return servicios.map((servicio) => ({
@@ -13,9 +14,25 @@ export function getStaticPaths() {
 
 const { servicio } = Astro.props;
 const otros = servicios.filter((s) => s.slug !== servicio.slug).slice(0, 3);
+
+const base = Astro.site ?? new URL('https://qualityac.co');
+const jsonLd = [
+  servicioLd(servicio, base),
+  migas(
+    [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Servicios', ruta: '/servicios' },
+      { nombre: servicio.tituloCorto, ruta: `/servicios/${servicio.slug}` },
+    ],
+    base
+  ),
+];
+
+// El título de buscador usa las normas, que es lo que la gente escribe al buscar.
+const tituloSeo = servicio.tituloSeo;
 ---
 
-<Base titulo={servicio.tituloCorto} descripcion={servicio.resumen}>
+<Base titulo={tituloSeo} descripcion={servicio.resumen} jsonLd={jsonLd}>
   <!-- Encabezado -->
   <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>

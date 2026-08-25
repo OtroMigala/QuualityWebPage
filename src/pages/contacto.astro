@@ -4,13 +4,15 @@ import { site, whatsappUrl } from '../data/site';
 import { servicios } from '../data/servicios';
 ---
 
-<Base titulo="Contacto" descripcion={`Contacte a ${site.nombre} en ${site.ciudad}. Diagnóstico inicial sin costo.`}>
+<Base
+  titulo="Contacto"
+  descripcion={`Consultoría en sistemas de gestión en ${site.ciudad} y todo Colombia. Diagnóstico inicial sin costo. Escríbanos o llámenos.`}
+>
   <!-- Encabezado -->
   <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
     <div class="wrap relative"><div class="max-w-3xl">
-      <p class="eyebrow eyebrow-light reveal">Hablemos</p>
-      <h1 class="reveal mt-5 text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+      <h1 class="reveal text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
         Cuéntenos qué necesita su organización
       </h1>
       <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="120">

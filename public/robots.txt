@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Panel del estudiante: privado, no debe indexarse
+Disallow: /aula/mi-aprendizaje
+
+Sitemap: https://qualityac.co/sitemap-index.xml

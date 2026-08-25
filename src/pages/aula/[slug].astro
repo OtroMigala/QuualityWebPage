@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { cursos, formatoCOP } from '../../data/cursos';
+import { cursoLd, migas } from '../../data/seo';
 
 export function getStaticPaths() {
   return cursos.map((curso) => ({ params: { slug: curso.slug }, props: { curso } }));
@@ -9,9 +10,24 @@ export function getStaticPaths() {
 const { curso } = Astro.props;
 const totalLecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
 const relacionados = cursos.filter((c) => c.slug !== curso.slug && c.categoria === curso.categoria).slice(0, 2);
+
+const base = Astro.site ?? new URL('https://qualityac.co');
+const jsonLd = [
+  cursoLd(curso, base),
+  migas(
+    [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Aula Virtual', ruta: '/aula' },
+      { nombre: curso.titulo, ruta: `/aula/${curso.slug}` },
+    ],
+    base
+  ),
+];
+
+const descripcionSeo = `Curso en línea de ${curso.duracionHoras} horas con certificado. ${curso.resumen}`;
 ---
 
-<Base titulo={curso.titulo} descripcion={curso.resumen}>
+<Base titulo={curso.titulo} descripcion={descripcionSeo} jsonLd={jsonLd}>
   <!-- Encabezado -->
   <section class="surface-navy relative overflow-hidden pt-36 pb-16 md:pt-44 md:pb-20">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>

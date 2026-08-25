@@ -3,6 +3,8 @@ export interface Servicio {
   numero: string;
   titulo: string;
   tituloCorto: string;
+  /** Título corto para buscadores: debe caber en 60 caracteres junto con la marca */
+  tituloSeo: string;
   tagline: string;
   resumen: string;
   descripcion: string[];
@@ -23,6 +25,7 @@ export const servicios: Servicio[] = [
     numero: '01',
     titulo: 'Sistemas de Gestión: Calidad, Ambiental y Seguridad y Salud en el Trabajo',
     tituloCorto: 'Sistemas de Gestión',
+    tituloSeo: 'Consultoría ISO 9001, ISO 14001 e ISO 45001',
     tagline: 'ISO 9001 · ISO 14001 · ISO 45001',
     resumen:
       'Diseñamos, implementamos y preparamos para certificación sistemas de gestión que la organización realmente usa, en lugar de carpetas que solo se abren en auditoría.',
@@ -49,6 +52,7 @@ export const servicios: Servicio[] = [
     numero: '02',
     titulo: 'Gestión de Riesgos Organizacionales',
     tituloCorto: 'Gestión de Riesgos',
+    tituloSeo: 'Gestión de riesgos empresariales ISO 31000',
     tagline: 'ISO 31000 · Riesgo operativo, estratégico y de cumplimiento',
     resumen:
       'Convertimos el mapa de riesgos en una herramienta de decisión gerencial, con controles que se miden y responsables que responden.',
@@ -75,6 +79,7 @@ export const servicios: Servicio[] = [
     numero: '03',
     titulo: 'Control Interno Organizacional',
     tituloCorto: 'Control Interno',
+    tituloSeo: 'Control interno organizacional y MECI',
     tagline: 'MECI · COSO · Líneas de defensa',
     resumen:
       'Estructuramos el sistema de control interno para que la organización detecte a tiempo lo que se desvía, sin convertir el control en un obstáculo para operar.',
@@ -101,6 +106,7 @@ export const servicios: Servicio[] = [
     numero: '04',
     titulo: 'Calidad en Instituciones Prestadoras de Servicios de Salud',
     tituloCorto: 'Calidad en Salud',
+    tituloSeo: 'Calidad en salud: habilitación, PAMEC y acreditación',
     tagline: 'Habilitación · PAMEC · Acreditación',
     resumen:
       'Acompañamos a IPS y prestadores en los cuatro componentes del Sistema Obligatorio de Garantía de Calidad, desde la habilitación hasta la ruta de acreditación.',
@@ -128,6 +134,7 @@ export const servicios: Servicio[] = [
     numero: '05',
     titulo: 'Planificación, Diseño e Implementación de Programas de Auditoría',
     tituloCorto: 'Programas de Auditoría',
+    tituloSeo: 'Programas de auditoría interna ISO 19011',
     tagline: 'ISO 19011 · Auditoría interna y de segunda parte',
     resumen:
       'Diseñamos programas de auditoría que generan hallazgos accionables y formamos al equipo interno para sostenerlos sin depender del consultor.',

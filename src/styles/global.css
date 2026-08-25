@@ -153,25 +153,6 @@
     background-color: var(--color-navy-50);
   }
 
-  /* --- Etiqueta de sección --- */
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-navy-500);
-  }
-  .eyebrow::before {
-    content: '';
-    width: 1.75rem;
-    height: 2px;
-    background: linear-gradient(90deg, var(--color-gold-400), transparent);
-  }
-  .eyebrow-light { color: var(--color-gold-300); }
-
   /* --- Tarjeta --- */
   .card {
     background: #fff;

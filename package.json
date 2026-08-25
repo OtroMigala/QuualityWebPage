@@ -6,15 +6,18 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "seo": "node scripts/validar-seo.mjs",
+    "marca": "node scripts/logo.mjs && node scripts/optimize.mjs && node scripts/og.mjs"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^5.13.0",
     "three": "^0.179.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",
-    "tailwindcss": "^4.1.0",
-    "sharp": "^0.34.0"
+    "sharp": "^0.34.0",
+    "tailwindcss": "^4.1.0"
   }
 }

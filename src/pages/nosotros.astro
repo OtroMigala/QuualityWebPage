@@ -19,7 +19,10 @@ const valores = [
 ];
 ---
 
-<Base titulo="Quiénes somos" descripcion={`${site.nombre} — asesores y consultores en sistemas de gestión.`}>
+<Base
+  titulo="Quiénes somos"
+  descripcion={`${site.nombre}: asesores y consultores en sistemas de gestión, riesgos y calidad en salud, con base en ${site.ciudad}.`}
+>
   <!-- Encabezado -->
   <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
@@ -32,8 +35,7 @@ const valores = [
     />
 
     <div class="wrap relative"><div class="max-w-3xl">
-      <p class="eyebrow eyebrow-light reveal">{site.tagline}</p>
-      <h1 class="reveal mt-5 text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+      <h1 class="reveal text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
         Quiénes somos
       </h1>
       <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="120">
@@ -48,8 +50,7 @@ const valores = [
   <section class="wrap py-20 md:py-28">
     <div class="grid gap-14 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
       <div>
-        <p class="eyebrow reveal">Nuestra historia</p>
-        <h2 class="reveal mt-5 text-[clamp(1.6rem,3.4vw,2.3rem)] leading-tight font-extrabold" data-retraso="60">
+        <h2 class="reveal text-[clamp(1.6rem,3.4vw,2.3rem)] leading-tight font-extrabold" data-retraso="60">
           Texto pendiente de redacción
         </h2>
         <div class="mt-7 space-y-5">
@@ -96,8 +97,7 @@ const valores = [
   <section class="bg-slate-bg py-20 md:py-28">
     <div class="wrap">
       <div class="mx-auto max-w-2xl text-center">
-        <p class="eyebrow reveal justify-center">Cómo trabajamos</p>
-        <h2 class="reveal mt-5 text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold" data-retraso="60">Nuestros valores</h2>
+        <h2 class="reveal text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold" data-retraso="60">Nuestros valores</h2>
       </div>
 
       <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -119,8 +119,7 @@ const valores = [
   <!-- Equipo -->
   <section class="wrap py-20 md:py-28">
     <div class="mx-auto max-w-2xl text-center">
-      <p class="eyebrow reveal justify-center">El equipo</p>
-      <h2 class="reveal mt-5 text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold" data-retraso="60">
+      <h2 class="reveal text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold" data-retraso="60">
         Quienes acompañan cada proyecto
       </h2>
     </div>

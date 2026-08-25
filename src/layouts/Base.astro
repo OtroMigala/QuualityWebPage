@@ -4,16 +4,81 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { site } from '../data/site';
+import { organizacion } from '../data/seo';
 
 interface Props {
   titulo: string;
   descripcion?: string;
   /** El home usa header transparente sobre el hero oscuro */
   headerTransparente?: boolean;
+  /** Excluir de buscadores (páginas privadas o de maqueta) */
+  noindex?: boolean;
+  /** Imagen para redes sociales, relativa al dominio */
+  imagen?: string;
+  /** Datos estructurados adicionales de la página */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { titulo, descripcion = site.descripcion, headerTransparente = false } = Astro.props;
-const tituloCompleto = titulo === site.nombre ? titulo : `${titulo} · ${site.nombre}`;
+const {
+  titulo,
+  descripcion = site.descripcion,
+  headerTransparente = false,
+  noindex = false,
+  imagen = '/og.jpg',
+  jsonLd = [],
+} = Astro.props;
+
+const esHome = Astro.url.pathname === '/';
+
+/**
+ * Google corta el título alrededor de los 60 caracteres. Si el nombre completo
+ * de la empresa no cabe, se usa la forma corta antes que perder el tema de la
+ * página, que es lo que de verdad se busca.
+ */
+const LIMITE = 62;
+function componerTitulo(base: string) {
+  if (esHome) return `${site.nombre} — ${site.tagline}`;
+  const largo = `${base} | ${site.nombre}`;
+  if (largo.length <= LIMITE) return largo;
+  const corto = `${base} | ${site.nombreCorto}`;
+  return corto.length <= LIMITE ? corto : base;
+}
+const tituloCompleto = componerTitulo(titulo);
+
+// Astro.site viene de astro.config.mjs. El fallback evita que falle `astro dev`
+// si alguien lo quita.
+const base = Astro.site ?? new URL('https://qualityac.co');
+
+// Con barra final, para que coincida exactamente con lo que emite el sitemap.
+// Si canónica y sitemap discrepan, Google recibe dos URL para la misma página.
+const ruta = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonica = new URL(ruta, base).href;
+const imagenAbsoluta = new URL(imagen, base).href;
+
+// Un solo bloque @graph pesa menos y evita entidades duplicadas.
+const grafo = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organizacion(base),
+    {
+      '@type': 'WebPage',
+      '@id': canonica,
+      url: canonica,
+      name: tituloCompleto,
+      description: descripcion,
+      inLanguage: 'es-CO',
+      isPartOf: {
+        '@type': 'WebSite',
+        '@id': new URL('/#sitio', base).href,
+        url: new URL('/', base).href,
+        name: site.nombre,
+        inLanguage: 'es-CO',
+        publisher: { '@id': new URL('#organizacion', base).href },
+      },
+    },
+    ...jsonLd,
+  ],
+};
 ---
 
 <!doctype html>
@@ -21,15 +86,45 @@ const tituloCompleto = titulo === site.nombre ? titulo : `${titulo} · ${site.no
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="theme-color" content="#013175" />
+    <link rel="canonical" href={canonica} />
 
-    <meta property="og:type" content="website" />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+      )
+    }
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="theme-color" content="#013175" />
+    <meta name="author" content={site.nombre} />
+    <meta name="geo.region" content="CO-CAU" />
+    <meta name="geo.placename" content="Popayán" />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={esHome ? 'website' : 'article'} />
+    <meta property="og:site_name" content={site.nombre} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagenAbsoluta} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.nombre} — ${site.tagline}`} />
     <meta property="og:locale" content="es_CO" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloCompleto} />
+    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:image" content={imagenAbsoluta} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,6 +132,8 @@ const tituloCompleto = titulo === site.nombre ? titulo : `${titulo} · ${site.no
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(grafo)} is:inline />
   </head>
 
   <body>

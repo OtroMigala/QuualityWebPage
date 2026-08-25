@@ -18,7 +18,7 @@ const enCurso = inscritos.filter((i) => i.avance < 100);
 const horasTotales = inscritos.reduce((n, i) => n + Math.round((i.curso.duracionHoras * i.avance) / 100), 0);
 ---
 
-<Base titulo="Mi aprendizaje" descripcion="Panel del estudiante del Aula Virtual Quality.">
+<Base titulo="Mi aprendizaje" descripcion="Panel del estudiante del Aula Virtual Quality." noindex>
   <!-- Encabezado -->
   <section class="surface-navy relative overflow-hidden pt-36 pb-14 md:pt-44 md:pb-16">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>

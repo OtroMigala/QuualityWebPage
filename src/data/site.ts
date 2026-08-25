@@ -7,8 +7,10 @@ export const site = {
   nombre: 'Quality Consulting Group',
   nombreCorto: 'Quality',
   tagline: 'Asesores & Consultores',
+  // Meta descripción del home. Conviene mantenerla bajo 160 caracteres:
+  // por encima de eso Google la corta en el resultado de búsqueda.
   descripcion:
-    'Consultoría en sistemas de gestión, riesgos, control interno, calidad en salud y programas de auditoría. Popayán, con cobertura en todo el país.',
+    'Consultoría ISO 9001, ISO 14001 e ISO 45001, gestión de riesgos, control interno y calidad en salud. Formación con certificado. Popayán y todo Colombia.',
 
   email: 'andrea_urbano@qualityac.co',
 
