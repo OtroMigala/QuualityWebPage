@@ -1,6 +1,6 @@
 ---
 import { site } from '../data/site';
-import { servicios } from '../data/servicios';
+import { areas, rutaArea } from '../data/servicios';
 import { ruta } from '../lib/rutas';
 
 const anio = new Date().getFullYear();
@@ -62,15 +62,18 @@ const iconos: Record<string, string> = {
         }
       </div>
 
-      <!-- Servicios -->
+      <!-- Áreas de consultoría -->
       <div>
         <h3 class="text-sm font-bold tracking-wider text-gold-400 uppercase">Consultoría</h3>
         <ul class="mt-5 space-y-3">
           {
-            servicios.map((s) => (
+            areas.map((a) => (
               <li>
-                <a href={ruta(`/servicios/${s.slug}`)} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
-                  {s.tituloCorto}
+                <a
+                  href={ruta(rutaArea(a.slug))}
+                  class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300"
+                >
+                  {a.tituloCorto}
                 </a>
               </li>
             ))

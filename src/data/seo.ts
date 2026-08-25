@@ -1,5 +1,5 @@
 import { site } from './site';
-import type { Servicio } from './servicios';
+import { rutaArea, type AreaConsultoria } from './servicios';
 import { formatoCOP, type Curso } from './cursos';
 
 /**
@@ -82,21 +82,27 @@ export function migas(items: { nombre: string; ruta: string }[], base: URL | str
   };
 }
 
-/** Una línea de consultoría. */
-export function servicioLd(servicio: Servicio, base: URL | string) {
+/**
+ * Un área dentro de Consultoría organizacional.
+ * Se declara como parte de la línea, no como servicio suelto, para que Google
+ * entienda la jerarquía real de la oferta.
+ */
+export function areaLd(area: AreaConsultoria, base: URL | string) {
+  const url = urlAbsoluta(rutaArea(area.slug), base);
   return {
     '@type': 'Service',
-    '@id': urlAbsoluta(`/servicios/${servicio.slug}#servicio`, base),
-    name: servicio.titulo,
-    description: servicio.resumen,
-    serviceType: servicio.tituloCorto,
-    url: urlAbsoluta(`/servicios/${servicio.slug}`, base),
+    '@id': `${url}#servicio`,
+    name: area.titulo,
+    description: area.resumen,
+    serviceType: area.tituloCorto,
+    url,
     provider: { '@id': urlAbsoluta(ID_ORG, base) },
+    isRelatedTo: { '@id': urlAbsoluta('/servicios/consultoria-organizacional#servicio', base) },
     areaServed: { '@type': 'Country', name: 'Colombia' },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: `Entregables — ${servicio.tituloCorto}`,
-      itemListElement: servicio.entregables.map((e) => ({
+      name: `Entregables — ${area.tituloCorto}`,
+      itemListElement: area.entregables.map((e) => ({
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: e },
       })),

@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import ServicioIcono from '../../components/ServicioIcono.astro';
+import { migas } from '../../data/seo';
+import { ruta } from '../../lib/rutas';
+
+const base = Astro.site ?? new URL('https://qualityac.co');
+const jsonLd = [
+  migas(
+    [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Servicios', ruta: '/servicios' },
+      { nombre: 'Convenciones y eventos', ruta: '/servicios/eventos' },
+    ],
+    base
+  ),
+];
+
+// ⚠ PENDIENTE: toda esta página espera el alcance que defina Gustavo.
+// Sin ese contenido no se emite esquema Service: sería afirmar una oferta
+// que todavía no está definida.
+---
+
+<Base
+  titulo="Convenciones y eventos comerciales"
+  descripcion="Organización de convenciones, jornadas técnicas y encuentros empresariales."
+  jsonLd={jsonLd}
+>
+  <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <img
+      src={ruta('/brand/isotipo.webp')}
+      alt=""
+      width="256"
+      height="282"
+      class="pointer-events-none absolute -right-16 -bottom-20 h-80 w-auto opacity-[0.06] brightness-0 invert"
+    />
+
+    <div class="wrap relative">
+      <nav aria-label="Ruta de navegación" class="reveal mb-8 flex items-center gap-2 text-[0.82rem] text-navy-200">
+        <a href={ruta('/')} class="transition-colors hover:text-gold-300">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href={ruta('/servicios')} class="transition-colors hover:text-gold-300">Servicios</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white">Convenciones y eventos</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <span class="reveal mb-6 grid size-14 place-items-center rounded-2xl bg-white/10 text-gold-400 backdrop-blur-sm">
+          <ServicioIcono nombre="eventos" clase="size-7" />
+        </span>
+        <h1 class="reveal text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Convenciones y eventos comerciales
+        </h1>
+        <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="120">
+          Organización de convenciones, jornadas técnicas y encuentros empresariales.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-20 md:py-28">
+    <div class="reveal mx-auto max-w-2xl rounded-[1rem] border border-dashed border-navy-200 bg-navy-50/45 p-9 text-center">
+      <h2 class="text-[1.3rem] font-bold">Sección en construcción</h2>
+      <p class="mt-4 leading-relaxed text-slate-body">
+        Estamos terminando de definir el alcance de esta línea. Si le interesa organizar un evento con nosotros,
+        escríbanos y lo conversamos directamente.
+      </p>
+      <a href={ruta('/contacto')} class="btn btn-navy mt-8">Escribirnos</a>
+    </div>
+  </section>
+
+  <CtaBanner />
+</Base>

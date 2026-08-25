@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site, whatsappUrl } from '../data/site';
-import { servicios } from '../data/servicios';
+import { lineas, areas, rutaArea } from '../data/servicios';
 import { ruta } from '../lib/rutas';
 ---
 
@@ -95,10 +95,17 @@ import { ruta } from '../lib/rutas';
               class="w-full rounded-xl border border-slate-line bg-white px-4 py-3 text-[0.94rem] transition-colors outline-none focus:border-navy-500 focus:ring-4 focus:ring-navy-100"
             >
               <option value="">Seleccione una opción</option>
-              {servicios.map((s) => <option value={s.slug}>{s.tituloCorto}</option>)}
-              <option value="formacion">Formación / Aula Virtual</option>
-              <option value="eventos">Convenciones y eventos</option>
-              <option value="otro">Otro</option>
+              <optgroup label="Consultoría organizacional">
+                {areas.map((a) => <option value={a.slug}>{a.tituloCorto}</option>)}
+              </optgroup>
+              <optgroup label="Otras líneas">
+                {
+                  lineas
+                    .filter((l) => l.slug !== 'consultoria-organizacional')
+                    .map((l) => <option value={l.slug}>{l.tituloCorto}</option>)
+                }
+                <option value="otro">Otro</option>
+              </optgroup>
             </select>
           </div>
 

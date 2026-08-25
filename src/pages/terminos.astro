@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { ruta } from '../lib/rutas';
+
+/**
+ * ⚠ BORRADOR SIN REVISIÓN JURÍDICA.
+ * Faltan por definir puntos con efecto económico real: política de reembolso,
+ * vigencia del acceso a los cursos y condiciones de la formación cerrada.
+ */
+const actualizado = '25 de agosto de 2026';
+---
+
+<Base
+  titulo="Términos y condiciones"
+  descripcion="Términos y condiciones de uso del sitio web y del Aula Virtual de Quality Consulting Group."
+  noindex
+>
+  <section class="surface-navy relative overflow-hidden pt-40 pb-16 md:pt-48 md:pb-20">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <div class="wrap relative">
+      <div class="max-w-3xl">
+        <h1 class="reveal text-[clamp(2rem,5vw,3.2rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Términos y condiciones
+        </h1>
+        <p class="reveal mt-6 text-[0.95rem] text-navy-200" data-retraso="120">
+          Última actualización: {actualizado}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-20">
+    <div class="reveal mb-10 max-w-3xl rounded-[1rem] border border-dashed border-gold-300 bg-gold-50 p-6">
+      <p class="text-[0.8rem] font-semibold tracking-wide text-gold-700 uppercase">Borrador</p>
+      <p class="mt-2.5 text-[0.92rem] leading-relaxed text-slate-body">
+        Faltan por decidir puntos con efecto económico directo: la política de reembolso, la vigencia del acceso a los
+        cursos y las condiciones de la formación cerrada. Conviene definirlos antes de cobrar la primera inscripción.
+      </p>
+    </div>
+
+    <div class="max-w-3xl space-y-10">
+      <div>
+        <h2 class="text-[1.25rem] font-bold">1. Alcance</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Estos términos regulan el uso del sitio web de {site.nombre} y la contratación de los cursos ofrecidos en el
+          Aula Virtual. Al inscribirse en un curso usted acepta estas condiciones.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">2. Inscripción y pago</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Los precios se expresan en pesos colombianos e incluyen los impuestos aplicables. El pago se procesa a través
+          de una pasarela autorizada; nosotros no almacenamos los datos de su tarjeta. El acceso al curso se habilita
+          una vez la pasarela confirma la aprobación del pago.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">3. Acceso al contenido</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          El acceso es personal e intransferible. Compartir credenciales o redistribuir el material da lugar a la
+          cancelación del acceso sin reembolso.
+        </p>
+        {/* ⚠ PENDIENTE: confirmar si el acceso es realmente permanente o tiene vigencia */}
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">4. Retracto y reembolso</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          El Estatuto del Consumidor reconoce el derecho de retracto en las ventas a distancia dentro de los cinco días
+          hábiles siguientes a la compra. Este derecho tiene límites cuando el servicio ya empezó a prestarse, de modo
+          que conviene precisar en qué punto del avance del curso deja de aplicar.
+        </p>
+        {/* ⚠ PENDIENTE: definir la política concreta con Andrea y Gustavo */}
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">5. Certificados</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Al aprobar la evaluación final se expide un certificado con código único de verificación. El certificado
+          acredita la participación y aprobación del curso; no constituye título de educación formal ni habilita para
+          el ejercicio de profesiones reguladas.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">6. Propiedad intelectual</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Los contenidos, formatos y materiales del Aula Virtual son propiedad de {site.nombre}. Los formatos
+          descargables pueden usarse dentro de la organización del participante; no pueden comercializarse ni
+          incorporarse a servicios de consultoría prestados por terceros.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">7. Servicios de consultoría</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Los proyectos de consultoría se rigen por la propuesta y el contrato que se firme en cada caso, que prevalecen
+          sobre estos términos. Nuestro acompañamiento se orienta al cumplimiento normativo, pero la responsabilidad
+          por el cumplimiento recae en la organización contratante.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">8. Ley aplicable</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Estos términos se rigen por la legislación colombiana. Cualquier controversia se someterá a los jueces
+          competentes de la República de Colombia.
+        </p>
+      </div>
+
+      <a href={ruta('/contacto')} class="btn btn-navy">Contactarnos</a>
+    </div>
+  </section>
+</Base>

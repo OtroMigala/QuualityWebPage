@@ -1,5 +1,103 @@
-export interface Servicio {
+/**
+ * La oferta tiene DOS niveles y conviene no confundirlos:
+ *
+ *   · `lineas`  — las 4 líneas de servicio de la empresa.
+ *   · `areas`   — las 5 áreas de trabajo DENTRO de Consultoría organizacional.
+ *
+ * BORRADOR DE CONTENIDO — sujeto a revisión de Andrea y Gustavo.
+ * Las normas y marcos citados corresponden a la regulación colombiana vigente;
+ * conviene confirmar alcance y versiones antes de publicar.
+ */
+
+export type Icono =
+  | 'consultoria'
+  | 'formacion'
+  | 'eventos'
+  | 'edicion'
+  | 'gestion'
+  | 'riesgos'
+  | 'control'
+  | 'salud'
+  | 'auditoria';
+
+// ---------------------------------------------------------------------------
+// Nivel 1 — las cuatro líneas de servicio
+// ---------------------------------------------------------------------------
+
+export interface LineaServicio {
   slug: string;
+  numero: string;
+  titulo: string;
+  tituloCorto: string;
+  tagline: string;
+  resumen: string;
+  /** A dónde lleva. Formación apunta al Aula Virtual, no a una ficha propia. */
+  href: string;
+  icono: Icono;
+  estado: 'activa' | 'en-construccion';
+}
+
+export const lineas: LineaServicio[] = [
+  {
+    slug: 'consultoria-organizacional',
+    numero: '1',
+    titulo: 'Consultoría organizacional',
+    tituloCorto: 'Consultoría organizacional',
+    tagline: 'Cinco áreas de trabajo',
+    resumen:
+      'Sistemas de gestión, riesgos, control interno, calidad en salud y programas de auditoría. Acompañamiento técnico que deja capacidad instalada en su equipo.',
+    href: '/servicios/consultoria-organizacional',
+    icono: 'consultoria',
+    estado: 'activa',
+  },
+  {
+    slug: 'formacion',
+    numero: '2',
+    titulo: 'Formación para el trabajo',
+    tituloCorto: 'Formación',
+    tagline: 'Aula Virtual Quality',
+    resumen:
+      'Cursos en línea con certificado, y formación cerrada dictada sobre los procesos reales de su organización.',
+    href: '/aula',
+    icono: 'formacion',
+    estado: 'activa',
+  },
+  {
+    slug: 'eventos',
+    numero: '3',
+    titulo: 'Organización de convenciones y eventos comerciales',
+    tituloCorto: 'Convenciones y eventos',
+    tagline: 'Encuentros empresariales',
+    resumen:
+      'Organización de convenciones, jornadas técnicas y encuentros empresariales.',
+    href: '/servicios/eventos',
+    icono: 'eventos',
+    // ⚠ PENDIENTE: alcance y contenido por definir con Gustavo.
+    estado: 'en-construccion',
+  },
+  {
+    slug: 'edicion-de-libros',
+    numero: '4',
+    titulo: 'Edición de libros',
+    tituloCorto: 'Edición de libros',
+    tagline: 'Impreso, electrónico y audio',
+    resumen:
+      'Edición y publicación de libros en formato impreso, electrónico y audio, incluidos manuales técnicos, textos escolares y obras de referencia.',
+    href: '/servicios/edicion-de-libros',
+    icono: 'edicion',
+    estado: 'activa',
+  },
+];
+
+export const getLinea = (slug: string) => lineas.find((l) => l.slug === slug);
+
+// ---------------------------------------------------------------------------
+// Nivel 2 — las cinco áreas dentro de Consultoría organizacional
+// ---------------------------------------------------------------------------
+
+export interface AreaConsultoria {
+  slug: string;
+  numero: string;
   titulo: string;
   tituloCorto: string;
   /** Título corto para buscadores: debe caber en 60 caracteres junto con la marca */
@@ -10,17 +108,13 @@ export interface Servicio {
   paraQuien: string;
   entregables: string[];
   normas: string[];
-  icono: 'gestion' | 'riesgos' | 'control' | 'salud' | 'auditoria';
+  icono: Icono;
 }
 
-/**
- * BORRADOR DE CONTENIDO — sujeto a revisión de Andrea y Gustavo.
- * Las normas y marcos citados corresponden a la regulación colombiana vigente;
- * conviene confirmar alcance y versiones antes de publicar.
- */
-export const servicios: Servicio[] = [
+export const areas: AreaConsultoria[] = [
   {
     slug: 'sistemas-de-gestion',
+    numero: '1.1',
     titulo: 'Sistemas de Gestión: Calidad, Ambiental y Seguridad y Salud en el Trabajo',
     tituloCorto: 'Sistemas de Gestión',
     tituloSeo: 'Consultoría ISO 9001, ISO 14001 e ISO 45001',
@@ -47,6 +141,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'gestion-de-riesgos',
+    numero: '1.2',
     titulo: 'Gestión de Riesgos Organizacionales',
     tituloCorto: 'Gestión de Riesgos',
     tituloSeo: 'Gestión de riesgos empresariales ISO 31000',
@@ -73,6 +168,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'control-interno',
+    numero: '1.3',
     titulo: 'Control Interno Organizacional',
     tituloCorto: 'Control Interno',
     tituloSeo: 'Control interno organizacional y MECI',
@@ -99,6 +195,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'calidad-en-salud',
+    numero: '1.4',
     titulo: 'Calidad en Instituciones Prestadoras de Servicios de Salud',
     tituloCorto: 'Calidad en Salud',
     tituloSeo: 'Calidad en salud: habilitación, PAMEC y acreditación',
@@ -126,6 +223,7 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'programas-de-auditoria',
+    numero: '1.5',
     titulo: 'Planificación, Diseño e Implementación de Programas de Auditoría',
     tituloCorto: 'Programas de Auditoría',
     tituloSeo: 'Programas de auditoría interna ISO 19011',
@@ -153,4 +251,45 @@ export const servicios: Servicio[] = [
   },
 ];
 
-export const getServicio = (slug: string) => servicios.find((s) => s.slug === slug);
+export const getArea = (slug: string) => areas.find((a) => a.slug === slug);
+
+/** Ruta de una ficha de área. Vive bajo la línea a la que pertenece. */
+export const rutaArea = (slug: string) => `/servicios/consultoria-organizacional/${slug}`;
+
+// ---------------------------------------------------------------------------
+// Contenido de la línea 4 — edición de libros
+// ---------------------------------------------------------------------------
+
+/**
+ * Redactado a partir del descriptor CIIU 5811. Se omiten las exclusiones del
+ * código, que son detalle de registro mercantil y no texto de sitio web.
+ *
+ * ⚠ PENDIENTE: confirmar con Andrea si esta línea se está ofreciendo de forma
+ * activa o si por ahora solo figura como actividad registrada.
+ */
+export const catalogoEditorial = [
+  {
+    titulo: 'Libros técnicos y profesionales',
+    texto: 'Obras dirigidas a públicos especializados, además de folletos, fascículos y publicaciones similares.',
+  },
+  {
+    titulo: 'Manuales y textos escolares',
+    texto: 'Libros de texto, trabajos técnicos, material de apoyo docente y libros para colorear.',
+  },
+  {
+    titulo: 'Diccionarios y enciclopedias',
+    texto: 'Obras de referencia en formato impreso, electrónico y en CD-ROM.',
+  },
+  {
+    titulo: 'Atlas y material cartográfico',
+    texto: 'Atlas, mapas y gráficos.',
+  },
+  {
+    titulo: 'Novelas gráficas',
+    texto: 'Novela gráfica y libros de tiras cómicas.',
+  },
+  {
+    titulo: 'Audiolibros',
+    texto: 'Edición de libros en audio para distribución digital.',
+  },
+];

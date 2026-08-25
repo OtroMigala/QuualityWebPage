@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import ServicioIcono from '../../components/ServicioIcono.astro';
+import { catalogoEditorial } from '../../data/servicios';
+import { migas, urlAbsoluta } from '../../data/seo';
+import { ruta } from '../../lib/rutas';
+
+const base = Astro.site ?? new URL('https://qualityac.co');
+const jsonLd = [
+  {
+    '@type': 'Service',
+    '@id': urlAbsoluta('/servicios/edicion-de-libros#servicio', base),
+    name: 'Edición de libros',
+    description:
+      'Edición y publicación de libros en formato impreso, electrónico y audio: manuales técnicos, textos escolares, obras de referencia y audiolibros.',
+    url: urlAbsoluta('/servicios/edicion-de-libros', base),
+    provider: { '@id': urlAbsoluta('#organizacion', base) },
+    areaServed: { '@type': 'Country', name: 'Colombia' },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Tipos de publicación',
+      itemListElement: catalogoEditorial.map((c) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: c.titulo, description: c.texto },
+      })),
+    },
+  },
+  migas(
+    [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Servicios', ruta: '/servicios' },
+      { nombre: 'Edición de libros', ruta: '/servicios/edicion-de-libros' },
+    ],
+    base
+  ),
+];
+---
+
+<Base
+  titulo="Edición de libros"
+  descripcion="Edición y publicación de libros en formato impreso, electrónico y audio: manuales técnicos, textos escolares, obras de referencia y audiolibros."
+  jsonLd={jsonLd}
+>
+  <!-- Encabezado -->
+  <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <img
+      src={ruta('/brand/isotipo.webp')}
+      alt=""
+      width="256"
+      height="282"
+      class="pointer-events-none absolute -right-16 -bottom-20 h-80 w-auto opacity-[0.06] brightness-0 invert"
+    />
+
+    <div class="wrap relative">
+      <nav aria-label="Ruta de navegación" class="reveal mb-8 flex items-center gap-2 text-[0.82rem] text-navy-200">
+        <a href={ruta('/')} class="transition-colors hover:text-gold-300">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href={ruta('/servicios')} class="transition-colors hover:text-gold-300">Servicios</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white">Edición de libros</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <span class="reveal mb-6 grid size-14 place-items-center rounded-2xl bg-white/10 text-gold-400 backdrop-blur-sm">
+          <ServicioIcono nombre="edicion" clase="size-7" />
+        </span>
+        <h1 class="reveal text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Edición de libros
+        </h1>
+        <p class="reveal mt-4 text-[0.82rem] font-semibold tracking-wide text-gold-300 uppercase" data-retraso="100">
+          Impreso · Electrónico · Audio
+        </p>
+        <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="140">
+          Edición y publicación de obras en formato impreso, electrónico y en audio, con foco en el material técnico y
+          educativo que acompaña nuestra actividad de consultoría y formación.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué editamos -->
+  <section class="wrap py-20 md:py-24">
+    <div class="max-w-2xl">
+      <h2 class="reveal text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold">Qué publicamos</h2>
+      <p class="reveal mt-5 leading-relaxed" data-retraso="60">
+        La actividad editorial cubre desde el libro técnico especializado hasta la obra de referencia y el audiolibro.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        catalogoEditorial.map((c, i) => (
+          <div class="card reveal p-7" data-retraso={i * 65}>
+            <h3 class="text-[1.02rem] leading-snug font-bold">{c.titulo}</h3>
+            <p class="mt-3 text-[0.92rem] leading-relaxed text-slate-body">{c.texto}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="reveal mt-12 rounded-[1rem] border border-dashed border-navy-200 bg-navy-50/45 p-7">
+      <p class="text-[0.8rem] font-semibold tracking-wide text-navy-500 uppercase">Nota interna</p>
+      <p class="mt-2.5 max-w-2xl text-[0.9rem] leading-relaxed text-slate-body">
+        Falta confirmar si esta línea se está ofreciendo de forma activa o si por ahora solo figura como actividad
+        registrada. De eso depende si la página lleva casos, catálogo y un formulario para autores, o si se queda como
+        una presentación breve.
+      </p>
+    </div>
+  </section>
+
+  <CtaBanner
+    titulo="¿Tiene una obra en preparación?"
+    texto="Cuéntenos de qué se trata y le decimos con franqueza si podemos acompañar su publicación."
+  />
+</Base>

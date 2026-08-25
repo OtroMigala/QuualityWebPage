@@ -67,5 +67,44 @@ for (const f of archivos) {
   );
 }
 
+// --- Enlaces internos rotos -------------------------------------------------
+// Un enlace a una pagina que no existe es un 404 en produccion. Se revisa aqui
+// para que el despliegue falle antes de publicarlo.
+const rutasExistentes = new Set(
+  archivos.map((f) => f.split(BARRA_INV).join('/').replace('dist', '').replace('/index.html', '') || '/')
+);
+const BASE = process.env.DESPLIEGUE === 'pages' ? '/QuualityWebPage' : '';
+const ESTATICO = /\.(webp|png|jpe?g|svg|css|js|xml|txt|ico|pdf|json)$/i;
+const rotos = new Map();
+
+for (const f of archivos) {
+  const html = readFileSync(f, 'utf8');
+  const origen = f.split(BARRA_INV).join('/').replace('dist', '').replace('/index.html', '') || '/';
+
+  for (const m of html.matchAll(/href="([^"]+)"/g)) {
+    let destino = m[1];
+    if (/^(https?:|mailto:|tel:|#|\/\/)/.test(destino)) continue;
+    if (BASE) {
+      if (!destino.startsWith(BASE)) continue;
+      destino = destino.slice(BASE.length);
+    } else if (!destino.startsWith('/')) continue;
+
+    destino = destino.split('#')[0].split('?')[0].replace(/\/+$/, '') || '/';
+    if (ESTATICO.test(destino)) continue;
+    if (rutasExistentes.has(destino)) continue;
+
+    if (!rotos.has(destino)) rotos.set(destino, new Set());
+    rotos.get(destino).add(origen);
+  }
+}
+
+if (rotos.size) {
+  console.log('\nEnlaces internos rotos:');
+  for (const [destino, origenes] of rotos) {
+    console.log(`  ${destino}  <- ${[...origenes].slice(0, 4).join(', ')}${origenes.size > 4 ? ` y ${origenes.size - 4} mas` : ''}`);
+  }
+  fallos += rotos.size;
+}
+
 console.log(`\n${archivos.length} paginas revisadas · ${fallos} con problemas`);
 process.exit(fallos ? 1 : 0);

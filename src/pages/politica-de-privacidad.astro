@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { ruta } from '../lib/rutas';
+
+/**
+ * ⚠ BORRADOR SIN REVISIÓN JURÍDICA.
+ * Cumple la estructura que exige la Ley 1581 de 2012 y el Decreto 1074 de 2015,
+ * pero debe revisarlo un abogado antes de publicar. Falta además registrar las
+ * bases de datos ante la SIC si se supera el umbral que obliga a hacerlo.
+ */
+const actualizado = '25 de agosto de 2026';
+---
+
+<Base
+  titulo="Política de privacidad"
+  descripcion="Política de tratamiento de datos personales de Quality Consulting Group, conforme a la Ley 1581 de 2012."
+  noindex
+>
+  <section class="surface-navy relative overflow-hidden pt-40 pb-16 md:pt-48 md:pb-20">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <div class="wrap relative">
+      <div class="max-w-3xl">
+        <h1 class="reveal text-[clamp(2rem,5vw,3.2rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Política de tratamiento de datos personales
+        </h1>
+        <p class="reveal mt-6 text-[0.95rem] text-navy-200" data-retraso="120">
+          Última actualización: {actualizado}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-16 md:py-20">
+    <div class="reveal mb-10 max-w-3xl rounded-[1rem] border border-dashed border-gold-300 bg-gold-50 p-6">
+      <p class="text-[0.8rem] font-semibold tracking-wide text-gold-700 uppercase">Borrador</p>
+      <p class="mt-2.5 text-[0.92rem] leading-relaxed text-slate-body">
+        Este texto sigue la estructura que exige la Ley 1581 de 2012, pero todavía no ha pasado revisión jurídica. No
+        debe publicarse como definitivo sin que lo revise un abogado.
+      </p>
+    </div>
+
+    <div class="max-w-3xl space-y-10">
+      <div>
+        <h2 class="text-[1.25rem] font-bold">1. Responsable del tratamiento</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          {site.nombre}, con domicilio en {site.ciudad}, es responsable del tratamiento de los datos personales
+          recolectados a través de este sitio web. Para cualquier asunto relacionado con sus datos puede escribir a
+          <a href={`mailto:${site.email}`} class="font-semibold text-navy-600 underline underline-offset-2">
+            {site.email}
+          </a>.
+        </p>
+        {/* ⚠ PENDIENTE: NIT y dirección completa */}
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">2. Datos que recolectamos</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          A través del formulario de contacto recolectamos nombre, organización, correo electrónico, teléfono y el
+          mensaje que usted decida enviarnos. Si se inscribe en el Aula Virtual recolectamos además los datos
+          necesarios para expedir su certificado y procesar el pago.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">3. Para qué los usamos</h2>
+        <ul class="mt-4 space-y-3">
+          {
+            [
+              'Responder sus solicitudes de información y elaborar propuestas de servicio.',
+              'Prestar los servicios de consultoría o formación que contrate.',
+              'Expedir certificados y llevar el registro académico de los cursos.',
+              'Enviarle información sobre nuestros servicios, solo si lo autoriza expresamente.',
+              'Cumplir obligaciones legales, contables y tributarias.',
+            ].map((t) => (
+              <li class="border-l-2 border-gold-400/50 pl-4 leading-relaxed text-slate-body">{t}</li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">4. Sus derechos</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Como titular de los datos usted puede conocer, actualizar y rectificar su información; solicitar prueba de la
+          autorización otorgada; ser informado sobre el uso que se le ha dado; presentar quejas ante la
+          Superintendencia de Industria y Comercio; y revocar la autorización o solicitar la supresión de sus datos
+          cuando no exista un deber legal o contractual que lo impida.
+        </p>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Para ejercer cualquiera de estos derechos escriba a
+          <a href={`mailto:${site.email}`} class="font-semibold text-navy-600 underline underline-offset-2">
+            {site.email}
+          </a>. Atendemos las consultas en un plazo máximo de diez días hábiles y los reclamos en quince días hábiles,
+          conforme a la ley.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">5. Conservación</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Conservamos sus datos mientras exista una relación comercial o mientras sean necesarios para las finalidades
+          descritas. Los registros académicos de los cursos se conservan de forma indefinida para poder verificar la
+          autenticidad de los certificados expedidos.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">6. Terceros que intervienen</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          No vendemos ni cedemos sus datos. Compartimos únicamente lo indispensable con los proveedores que hacen
+          funcionar el servicio: la pasarela de pagos, el proveedor de correo transaccional y el servicio donde se
+          alojan los datos del Aula Virtual.
+        </p>
+        {/* ⚠ PENDIENTE: nombrar los proveedores concretos al quedar definidos */}
+      </div>
+
+      <div>
+        <h2 class="text-[1.25rem] font-bold">7. Cambios</h2>
+        <p class="mt-4 leading-relaxed text-slate-body">
+          Cualquier modificación se publicará en esta página con su fecha de actualización. Si el cambio afecta de forma
+          sustancial la finalidad del tratamiento, se lo comunicaremos antes de aplicarlo.
+        </p>
+      </div>
+
+      <a href={ruta('/contacto')} class="btn btn-navy">Contactarnos</a>
+    </div>
+  </section>
+</Base>

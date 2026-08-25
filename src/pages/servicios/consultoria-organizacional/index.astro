@@ -1,0 +1,133 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CtaBanner from '../../../components/CtaBanner.astro';
+import ServicioIcono from '../../../components/ServicioIcono.astro';
+import { areas, rutaArea } from '../../../data/servicios';
+import { migas, urlAbsoluta } from '../../../data/seo';
+import { ruta } from '../../../lib/rutas';
+
+const base = Astro.site ?? new URL('https://qualityac.co');
+const jsonLd = [
+  {
+    '@type': 'Service',
+    '@id': urlAbsoluta('/servicios/consultoria-organizacional#servicio', base),
+    name: 'Consultoría organizacional',
+    description:
+      'Consultoría en sistemas de gestión, riesgos, control interno, calidad en salud y programas de auditoría.',
+    url: urlAbsoluta('/servicios/consultoria-organizacional', base),
+    provider: { '@id': urlAbsoluta('#organizacion', base) },
+    areaServed: { '@type': 'Country', name: 'Colombia' },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Áreas de consultoría organizacional',
+      itemListElement: areas.map((a) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: a.titulo,
+          description: a.resumen,
+          url: urlAbsoluta(rutaArea(a.slug), base),
+        },
+      })),
+    },
+  },
+  migas(
+    [
+      { nombre: 'Inicio', ruta: '/' },
+      { nombre: 'Servicios', ruta: '/servicios' },
+      { nombre: 'Consultoría organizacional', ruta: '/servicios/consultoria-organizacional' },
+    ],
+    base
+  ),
+];
+---
+
+<Base
+  titulo="Consultoría organizacional"
+  descripcion="Consultoría ISO 9001, ISO 14001 e ISO 45001, gestión de riesgos, control interno, calidad en salud y programas de auditoría."
+  jsonLd={jsonLd}
+>
+  <!-- Encabezado -->
+  <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <img
+      src={ruta('/brand/isotipo.webp')}
+      alt=""
+      width="256"
+      height="282"
+      class="pointer-events-none absolute -right-16 -bottom-20 h-80 w-auto opacity-[0.06] brightness-0 invert"
+    />
+
+    <div class="wrap relative">
+      <nav aria-label="Ruta de navegación" class="reveal mb-8 flex items-center gap-2 text-[0.82rem] text-navy-200">
+        <a href={ruta('/')} class="transition-colors hover:text-gold-300">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href={ruta('/servicios')} class="transition-colors hover:text-gold-300">Servicios</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white">Consultoría organizacional</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <h1 class="reveal text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Consultoría organizacional
+        </h1>
+        <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="120">
+          Cinco áreas de trabajo con un mismo criterio: dejar capacidad instalada en su equipo. Cada proyecto se
+          dimensiona según el tamaño, la madurez y la exigencia normativa que enfrenta la organización.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Las cinco áreas -->
+  <section class="wrap py-20 md:py-24">
+    <div class="space-y-6">
+      {
+        areas.map((a, i) => (
+          <article
+            class="card reveal group grid gap-x-8 gap-y-6 p-7 md:grid-cols-[auto_1fr_auto] md:items-start md:p-9"
+            data-retraso={i * 60}
+          >
+            <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-navy-50 text-navy-600 transition-colors duration-300 group-hover:bg-navy-600 group-hover:text-gold-400">
+              <ServicioIcono nombre={a.icono} clase="size-7" />
+            </span>
+
+            <div>
+              <h2 class="text-[1.2rem] leading-snug font-bold md:text-[1.35rem]">
+                <a href={ruta(rutaArea(a.slug))} class="transition-colors hover:text-navy-600">
+                  {a.titulo}
+                </a>
+              </h2>
+              <p class="mt-2 text-[0.78rem] font-semibold tracking-wide text-gold-600 uppercase">{a.tagline}</p>
+              <p class="mt-4 max-w-2xl leading-relaxed text-slate-body">{a.resumen}</p>
+
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {a.normas.map((n) => (
+                  <li class="rounded-full border border-slate-line bg-slate-bg px-3 py-1 text-[0.75rem] font-medium text-slate-muted">
+                    {n}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <a href={ruta(rutaArea(a.slug))} class="btn btn-outline shrink-0 md:self-center">
+              Ver detalle
+              <svg
+                class="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14m-6-6 6 6-6 6" />
+              </svg>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBanner />
+</Base>
