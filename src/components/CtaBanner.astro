@@ -1,0 +1,36 @@
+---
+import { whatsappUrl } from '../data/site';
+
+interface Props {
+  titulo?: string;
+  texto?: string;
+}
+const {
+  titulo = '¿Conversamos sobre su organización?',
+  texto = 'La primera conversación es un diagnóstico sin costo. Escuchamos su situación y le decimos con franqueza si podemos ayudar y cómo.',
+} = Astro.props;
+---
+
+<section class="wrap py-20 md:py-28">
+  <div class="surface-navy reveal relative overflow-hidden rounded-3xl px-7 py-14 text-center md:px-16 md:py-20">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+    <img
+      src="/brand/isotipo.webp"
+      alt=""
+      width="256"
+      height="282"
+      loading="lazy"
+      class="pointer-events-none absolute -right-10 -bottom-14 h-56 w-auto opacity-[0.07] brightness-0 invert md:h-72"
+    />
+
+    <div class="relative mx-auto max-w-2xl">
+      <h2 class="text-[clamp(1.6rem,3.6vw,2.6rem)] leading-tight font-extrabold">{titulo}</h2>
+      <p class="mx-auto mt-5 max-w-xl text-[1.02rem] leading-relaxed text-navy-100">{texto}</p>
+
+      <div class="mt-9 flex flex-wrap justify-center gap-3.5">
+        <a href="/contacto" class="btn btn-gold">Solicitar diagnóstico</a>
+        <a href={whatsappUrl()} target="_blank" rel="noopener" class="btn btn-ghost">Escribir por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>

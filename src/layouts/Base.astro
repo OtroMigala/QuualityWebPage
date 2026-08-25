@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import { site } from '../data/site';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  /** El home usa header transparente sobre el hero oscuro */
+  headerTransparente?: boolean;
+}
+
+const { titulo, descripcion = site.descripcion, headerTransparente = false } = Astro.props;
+const tituloCompleto = titulo === site.nombre ? titulo : `${titulo} · ${site.nombre}`;
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#013175" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:locale" content="es_CO" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+    />
+  </head>
+
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-navy-600 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+    >
+      Saltar al contenido
+    </a>
+
+    <Header transparente={headerTransparente} />
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <Footer />
+    <WhatsAppFab />
+
+    <script>
+      // Aparición al hacer scroll. IntersectionObserver, sin librerías.
+      const objetivos = document.querySelectorAll<HTMLElement>('.reveal');
+      if (objetivos.length) {
+        const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducido) {
+          objetivos.forEach((el) => el.classList.add('is-in'));
+        } else {
+          const io = new IntersectionObserver(
+            (entradas) => {
+              entradas.forEach((e) => {
+                if (!e.isIntersecting) return;
+                const el = e.target as HTMLElement;
+                const retraso = Number(el.dataset.retraso ?? 0);
+                setTimeout(() => el.classList.add('is-in'), retraso);
+                io.unobserve(el);
+              });
+            },
+            { rootMargin: '0px 0px -12% 0px', threshold: 0.1 }
+          );
+          objetivos.forEach((el) => io.observe(el));
+        }
+      }
+    </script>
+  </body>
+</html>

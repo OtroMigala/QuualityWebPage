@@ -1,0 +1,128 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="surface-navy relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20">
+  <!-- Capa 0 — respaldo estático. Se ve siempre; si WebGL carga, queda debajo. -->
+  <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+  <div
+    class="absolute top-1/2 right-0 aspect-square w-[min(105vw,52rem)] translate-x-[18%] -translate-y-1/2 rounded-full opacity-60 blur-3xl"
+    style="background: radial-gradient(circle, rgba(10,74,158,.42) 0%, rgba(1,49,117,.16) 45%, transparent 70%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Capa 1 — escena 3D -->
+  <canvas
+    id="hero-canvas"
+    class="pointer-events-none absolute inset-0 size-full opacity-0 transition-opacity duration-[1200ms] ease-out [&.is-ready]:opacity-100"
+    aria-hidden="true"></canvas>
+
+  <!-- Capa 2 — velo que garantiza contraste del texto sobre la escena -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    style="background: linear-gradient(96deg, rgba(1,21,54,.95) 0%, rgba(1,21,54,.88) 30%, rgba(1,21,54,.52) 46%, rgba(1,21,54,.14) 62%, transparent 74%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Capa 3 — contenido -->
+  <div class="wrap relative z-10">
+    <div class="max-w-3xl">
+      <p class="eyebrow eyebrow-light reveal">Consultoría y formación</p>
+
+      <h1 class="reveal mt-6 text-[clamp(2.2rem,6.2vw,4.2rem)] leading-[1.06] font-extrabold" data-retraso="80">
+        Sistemas de gestión que <span class="text-gradient-gold">la organización usa</span>, no que solo se archivan.
+      </h1>
+
+      <p class="reveal mt-7 max-w-2xl text-[clamp(1rem,1.7vw,1.2rem)] leading-relaxed text-navy-100" data-retraso="160">
+        Acompañamos a empresas e instituciones de salud en la implementación de sistemas de calidad, gestión de riesgos,
+        control interno y programas de auditoría. Desde Popayán, para todo el país.
+      </p>
+
+      <div class="reveal mt-10 flex flex-wrap gap-3.5" data-retraso="240">
+        <a href="/contacto" class="btn btn-gold">
+          Solicitar diagnóstico
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </a>
+        <a href="/aula" class="btn btn-ghost">Ver el Aula Virtual</a>
+      </div>
+
+      <!-- Indicadores de respaldo -->
+      <dl class="reveal mt-16 grid max-w-xl grid-cols-3 gap-6 border-t border-white/12 pt-8" data-retraso="320">
+        {
+          [
+            { valor: '+12', etiqueta: 'años de experiencia' },
+            { valor: '+80', etiqueta: 'organizaciones acompañadas' },
+            { valor: '5', etiqueta: 'líneas de consultoría' },
+          ].map((d) => (
+            <div>
+              {/* ⚠ PENDIENTE: cifras por confirmar con Andrea */}
+              <dt class="font-display text-3xl font-extrabold text-gold-400 md:text-4xl">{d.valor}</dt>
+              <dd class="mt-1.5 text-[0.82rem] leading-snug text-navy-200">{d.etiqueta}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <!-- Indicador de scroll -->
+  <div class="absolute inset-x-0 bottom-7 z-10 flex justify-center" aria-hidden="true">
+    <span class="flex h-10 w-6 items-start justify-center rounded-full border border-white/25 p-1.5">
+      <span class="h-2 w-1 animate-bounce rounded-full bg-gold-400"></span>
+    </span>
+  </div>
+</section>
+
+<script>
+  /**
+   * Carga condicional de la escena 3D.
+   * three.js solo se descarga si el equipo puede con él y el usuario no pidió menos movimiento.
+   */
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+
+  function debeAnimar(): boolean {
+    if (!canvas) return false;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+
+    // Respetar el modo de ahorro de datos
+    const conexion = (navigator as any).connection;
+    if (conexion?.saveData) return false;
+    if (conexion?.effectiveType && /2g/.test(conexion.effectiveType)) return false;
+
+    // Equipos de gama baja: el respaldo estático se ve bien y no los castiga
+    if ((navigator as any).deviceMemory && (navigator as any).deviceMemory < 4) return false;
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
+
+    // Comprobar que WebGL esté realmente disponible
+    try {
+      const prueba = document.createElement('canvas');
+      if (!(prueba.getContext('webgl2') || prueba.getContext('webgl'))) return false;
+    } catch {
+      return false;
+    }
+    return true;
+  }
+
+  if (debeAnimar()) {
+    const arrancar = () => {
+      import('../scripts/hero-scene')
+        .then(({ crearEscenaHero }) => crearEscenaHero(canvas!))
+        .catch(() => {
+          /* el respaldo estático ya está en pantalla; no hay nada que hacer */
+        });
+    };
+
+    // Después del load, y en un hueco libre del hilo principal
+    const enReposo = () =>
+      'requestIdleCallback' in window
+        ? (window as any).requestIdleCallback(arrancar, { timeout: 2200 })
+        : setTimeout(arrancar, 220);
+
+    if (document.readyState === 'complete') enReposo();
+    else window.addEventListener('load', enReposo, { once: true });
+  }
+</script>

@@ -1,0 +1,176 @@
+---
+import Base from '../../layouts/Base.astro';
+import CursoCard from '../../components/CursoCard.astro';
+import { cursos, categorias } from '../../data/cursos';
+---
+
+<Base
+  titulo="Aula Virtual"
+  descripcion="Cursos y programas de formación en sistemas de gestión, auditoría, riesgos y calidad en salud."
+>
+  <!-- Encabezado -->
+  <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
+    <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
+
+    <div class="wrap relative">
+      <div class="max-w-3xl">
+        <p class="eyebrow eyebrow-light reveal">Formación para el trabajo</p>
+        <h1 class="reveal mt-5 text-[clamp(2rem,5vw,3.4rem)] leading-[1.1] font-extrabold" data-retraso="60">
+          Aula Virtual Quality
+        </h1>
+        <p class="reveal mt-6 text-[1.05rem] leading-relaxed text-navy-100" data-retraso="120">
+          Formación construida por consultores que auditan a diario. Cada curso entrega los formatos, matrices y listas
+          de verificación que usamos en proyectos reales.
+        </p>
+
+        <div class="reveal mt-9 flex flex-wrap gap-3.5" data-retraso="180">
+          <a href="#catalogo" class="btn btn-gold">Ver catálogo</a>
+          <a href="/aula/mi-aprendizaje" class="btn btn-ghost">Ingresar a mi cuenta</a>
+        </div>
+      </div>
+
+      <dl class="reveal mt-16 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/12 pt-8 sm:grid-cols-4" data-retraso="240">
+        {
+          [
+            [String(cursos.length), 'cursos disponibles'],
+            ['100%', 'en línea'],
+            ['∞', 'acceso permanente'],
+            ['Sí', 'certificado incluido'],
+          ].map(([v, e]) => (
+            <div>
+              <dt class="font-display text-2xl font-extrabold text-gold-400 md:text-3xl">{v}</dt>
+              <dd class="mt-1.5 text-[0.82rem] leading-snug text-navy-200">{e}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Catálogo -->
+  <section id="catalogo" class="wrap scroll-mt-28 py-20 md:py-24">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-xl">
+        <h2 class="reveal text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold">Catálogo de cursos</h2>
+        <p class="reveal mt-4 leading-relaxed" data-retraso="60">
+          Filtre por área temática. Todos incluyen certificado y acceso sin vencimiento.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="reveal mt-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtrar cursos por categoría">
+      {
+        categorias.map((cat, i) => (
+          <button
+            type="button"
+            data-filtro={cat}
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            class="rounded-full border border-slate-line px-4 py-2 text-[0.875rem] font-medium text-slate-body transition-all hover:border-navy-300 aria-pressed:border-navy-600 aria-pressed:bg-navy-600 aria-pressed:text-white"
+          >
+            {cat}
+          </button>
+        ))
+      }
+    </div>
+
+    <div id="rejilla-cursos" class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {cursos.map((c, i) => <CursoCard curso={c} retraso={(i % 3) * 70} />)}
+    </div>
+
+    <p id="sin-resultados" hidden class="mt-16 text-center text-slate-muted">
+      No hay cursos en esta categoría por ahora.
+    </p>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section class="bg-slate-bg py-20 md:py-24">
+    <div class="wrap">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="eyebrow reveal justify-center">Cómo funciona</p>
+        <h2 class="reveal mt-5 text-[clamp(1.6rem,3.4vw,2.3rem)] font-extrabold" data-retraso="60">
+          De la inscripción al certificado
+        </h2>
+      </div>
+
+      <ol class="mt-14 grid gap-8 md:grid-cols-4">
+        {
+          [
+            ['Elija su curso', 'Revise el temario, la intensidad horaria y a quién está dirigido.'],
+            ['Pague en línea', 'Tarjeta débito o crédito, PSE, Nequi o transferencia. Acceso inmediato.'],
+            ['Avance a su ritmo', 'La plataforma recuerda dónde quedó. Sin fechas límite.'],
+            ['Reciba su certificado', 'Al aprobar la evaluación final, con código de verificación.'],
+          ].map(([t, d], i) => (
+            <li class="reveal relative" data-retraso={i * 80}>
+              <span class="font-display grid size-12 place-items-center rounded-full bg-navy-600 text-lg font-extrabold text-white">
+                {i + 1}
+              </span>
+              {i < 3 && (
+                <span class="absolute top-6 left-14 hidden h-px w-[calc(100%-3.5rem)] bg-slate-line md:block" aria-hidden="true" />
+              )}
+              <h3 class="mt-5 text-[1rem] font-bold">{t}</h3>
+              <p class="mt-2.5 text-[0.9rem] leading-relaxed text-slate-body">{d}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Formación a la medida -->
+  <section class="wrap py-20 md:py-24">
+    <div class="card reveal grid gap-10 p-8 md:grid-cols-[1.3fr_1fr] md:items-center md:p-12">
+      <div>
+        <p class="eyebrow">Para organizaciones</p>
+        <h2 class="mt-5 text-[clamp(1.5rem,3vw,2.1rem)] leading-tight font-extrabold">
+          Formación cerrada para su equipo
+        </h2>
+        <p class="mt-5 leading-relaxed text-slate-body">
+          Adaptamos cualquier curso al contexto de su organización y lo dictamos exclusivamente para su equipo, sobre
+          sus propios procesos y documentos. Modalidad presencial en sitio o virtual en vivo.
+        </p>
+        <a href="/contacto" class="btn btn-navy mt-8">Cotizar formación cerrada</a>
+      </div>
+
+      <ul class="space-y-4">
+        {
+          [
+            'Contenido ajustado a su sector y normativa',
+            'Ejercicios sobre sus procesos reales',
+            'Horarios acordados con su operación',
+            'Informe de resultados por participante',
+          ].map((t) => (
+            <li class="flex gap-3">
+              <svg class="mt-0.5 size-5 shrink-0 text-gold-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="m5 13 4 4L19 7" />
+              </svg>
+              <span class="text-[0.94rem] leading-relaxed text-slate-body">{t}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Filtro de categorías: puro DOM, sin framework.
+  const botones = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const tarjetas = document.querySelectorAll<HTMLElement>('#rejilla-cursos [data-categoria]');
+  const vacio = document.getElementById('sin-resultados')!;
+
+  botones.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filtro = btn.dataset.filtro!;
+      botones.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+
+      let visibles = 0;
+      tarjetas.forEach((t) => {
+        const mostrar = filtro === 'Todos' || t.dataset.categoria === filtro;
+        t.hidden = !mostrar;
+        if (mostrar) visibles++;
+      });
+      vacio.hidden = visibles > 0;
+    });
+  });
+</script>

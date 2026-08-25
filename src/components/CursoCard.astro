@@ -1,0 +1,104 @@
+---
+import { formatoCOP, type Curso } from '../data/cursos';
+
+interface Props {
+  curso: Curso;
+  retraso?: number;
+}
+const { curso, retraso = 0 } = Astro.props;
+
+const gradientes: Record<Curso['color'], string> = {
+  navy: 'from-navy-600 to-navy-800',
+  gold: 'from-gold-500 to-gold-700',
+  teal: 'from-teal-600 to-navy-700',
+  violet: 'from-violet-600 to-navy-800',
+};
+
+const lecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
+---
+
+<article
+  class="card reveal group flex flex-col overflow-hidden"
+  data-retraso={retraso}
+  data-categoria={curso.categoria}
+>
+  <!-- Cabecera generada por CSS: sin imágenes que descargar -->
+  <a href={`/aula/${curso.slug}`} class="relative block aspect-[16/8] overflow-hidden">
+    <div class={`absolute inset-0 bg-gradient-to-br ${gradientes[curso.color]}`}></div>
+    <div
+      class="absolute inset-0 opacity-[0.16] transition-transform duration-700 group-hover:scale-110"
+      style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 15px 15px"
+      aria-hidden="true"
+    >
+    </div>
+    <img
+      src="/brand/isotipo.webp"
+      alt=""
+      width="256"
+      height="282"
+      loading="lazy"
+      class="absolute -right-5 -bottom-7 h-28 w-auto opacity-[0.13] brightness-0 invert transition-transform duration-700 group-hover:scale-110 group-hover:rotate-6"
+    />
+
+    <div class="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-4">
+      <span class="rounded-full bg-white/18 px-3 py-1 text-[0.7rem] font-semibold text-white backdrop-blur-sm">
+        {curso.categoria}
+      </span>
+      {
+        curso.proximamente && (
+          <span class="rounded-full bg-gold-400 px-3 py-1 text-[0.7rem] font-bold text-navy-900">Próximamente</span>
+        )
+      }
+    </div>
+  </a>
+
+  <div class="flex flex-1 flex-col p-6">
+    <div class="flex items-center gap-2 text-[0.72rem] font-semibold tracking-wide text-slate-muted uppercase">
+      <span>{curso.nivel}</span><span class="text-slate-line">•</span><span>{curso.modalidad}</span>
+    </div>
+
+    <h3 class="mt-2.5 text-lg leading-snug font-bold">
+      <a href={`/aula/${curso.slug}`} class="transition-colors hover:text-navy-600">{curso.titulo}</a>
+    </h3>
+
+    <p class="mt-2.5 flex-1 text-[0.9rem] leading-relaxed text-slate-body">{curso.resumen}</p>
+
+    <div class="mt-5 flex items-center gap-4 border-t border-slate-line pt-4 text-[0.8rem] text-slate-muted">
+      <span class="flex items-center gap-1.5">
+        <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+        </svg>
+        {curso.duracionHoras} horas
+      </span>
+      <span class="flex items-center gap-1.5">
+        <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 19.5V6a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" />
+        </svg>
+        {lecciones} lecciones
+      </span>
+    </div>
+
+    <div class="mt-4 flex items-end justify-between gap-3">
+      <div>
+        {
+          curso.proximamente ? (
+            <p class="text-sm font-semibold text-slate-muted">Inscripciones pronto</p>
+          ) : (
+            <>
+              {curso.precioAntes && (
+                <p class="text-xs text-slate-muted line-through">{formatoCOP(curso.precioAntes)}</p>
+              )}
+              <p class="font-display text-xl font-extrabold text-navy-600">{formatoCOP(curso.precio)}</p>
+            </>
+          )
+        }
+      </div>
+      <a
+        href={`/aula/${curso.slug}`}
+        class="text-sm font-semibold text-navy-600 transition-colors hover:text-gold-500"
+      >
+        Ver detalle →
+      </a>
+    </div>
+  </div>
+</article>

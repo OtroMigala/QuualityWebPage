@@ -1,0 +1,227 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Sistema de diseño — Quality Consulting Group
+   Colores extraídos del logo: azul #013175 · dorado #fdbe01
+   ============================================================ */
+@theme {
+  /* Azul de marca */
+  --color-navy-50: #eef4fc;
+  --color-navy-100: #d5e4f7;
+  --color-navy-200: #a9c6ee;
+  --color-navy-300: #6f9fe0;
+  --color-navy-400: #3a72c4;
+  --color-navy-500: #0a4a9e;
+  --color-navy-600: #013175;
+  --color-navy-700: #012a63;
+  --color-navy-800: #011f4a;
+  --color-navy-900: #011536;
+  --color-navy-950: #000c20;
+
+  /* Dorado de marca */
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fff3c6;
+  --color-gold-200: #ffe588;
+  --color-gold-300: #ffd24d;
+  --color-gold-400: #fdbe01;
+  --color-gold-500: #e0a500;
+  --color-gold-600: #b87c00;
+  --color-gold-700: #935c02;
+
+  /* Neutros con un leve tinte azul, para que todo se sienta de la misma familia */
+  --color-slate-ink: #0d1b2f;
+  --color-slate-body: #44546b;
+  --color-slate-muted: #6b7c94;
+  --color-slate-line: #e2e8f1;
+  --color-slate-bg: #f6f8fc;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Sora', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-slate-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-slate-ink);
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-200);
+    color: var(--color-navy-900);
+  }
+}
+
+@layer components {
+  /* --- Contenedor base --- */
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+
+  /* --- Botones --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    transition: all 0.25s var(--ease-out-soft);
+    white-space: nowrap;
+  }
+
+  .btn-gold {
+    background-color: var(--color-gold-400);
+    color: var(--color-navy-900);
+    box-shadow: 0 1px 2px rgb(1 31 74 / 0.12);
+  }
+  .btn-gold:hover {
+    background-color: var(--color-gold-300);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px rgb(253 190 1 / 0.55);
+  }
+
+  .btn-navy {
+    background-color: var(--color-navy-600);
+    color: #fff;
+  }
+  .btn-navy:hover {
+    background-color: var(--color-navy-500);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -8px rgb(1 49 117 / 0.45);
+  }
+
+  .btn-ghost {
+    border: 1.5px solid rgb(255 255 255 / 0.35);
+    color: #fff;
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-gold-400);
+    background-color: rgb(253 190 1 / 0.12);
+  }
+
+  .btn-outline {
+    border: 1.5px solid var(--color-slate-line);
+    color: var(--color-navy-600);
+    background: #fff;
+  }
+  .btn-outline:hover {
+    border-color: var(--color-navy-600);
+    background-color: var(--color-navy-50);
+  }
+
+  /* --- Etiqueta de sección --- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-500);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-gold-400), transparent);
+  }
+  .eyebrow-light { color: var(--color-gold-300); }
+
+  /* --- Tarjeta --- */
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-slate-line);
+    border-radius: var(--radius-card);
+    transition: all 0.3s var(--ease-out-soft);
+  }
+  .card:hover {
+    border-color: var(--color-navy-200);
+    box-shadow: 0 18px 40px -22px rgb(1 31 117 / 0.28);
+    transform: translateY(-3px);
+  }
+
+  /* --- Superficie oscura reutilizable --- */
+  .surface-navy {
+    background:
+      radial-gradient(80rem 40rem at 15% -10%, #01397f 0%, transparent 55%),
+      radial-gradient(60rem 35rem at 95% 110%, #012a63 0%, transparent 60%),
+      var(--color-navy-900);
+    color: #fff;
+  }
+  .surface-navy h1, .surface-navy h2, .surface-navy h3 { color: #fff; }
+
+  /* --- Rejilla decorativa sutil --- */
+  .grid-lines {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 68px 68px;
+    mask-image: radial-gradient(70% 60% at 50% 40%, #000 30%, transparent 100%);
+  }
+}
+
+@layer utilities {
+  /* Aparición al hacer scroll — sin JS pesado, solo IntersectionObserver */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s var(--ease-out-soft), transform 0.7s var(--ease-out-soft);
+  }
+  .reveal.is-in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(100deg, var(--color-gold-300), var(--color-gold-400) 55%, #ffe9a8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
