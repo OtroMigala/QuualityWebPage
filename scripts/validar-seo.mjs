@@ -73,7 +73,13 @@ for (const f of archivos) {
 const rutasExistentes = new Set(
   archivos.map((f) => f.split(BARRA_INV).join('/').replace('dist', '').replace('/index.html', '') || '/')
 );
-const BASE = process.env.DESPLIEGUE === 'pages' ? '/QuualityWebPage' : '';
+// La base se deduce del propio build, leyendo la canónica del home. Depender de
+// una variable de entorno se presta a que el build y la revisión no coincidan.
+const canonicaHome = readFileSync('dist/index.html', 'utf8').match(
+  /<link rel="canonical" href="([^"]+)"/
+)?.[1];
+const BASE = canonicaHome ? new URL(canonicaHome).pathname.replace(/\/+$/, '') : '';
+if (BASE) console.log(`\nBase detectada: ${BASE}`);
 const ESTATICO = /\.(webp|png|jpe?g|svg|css|js|xml|txt|ico|pdf|json)$/i;
 const rotos = new Map();
 
