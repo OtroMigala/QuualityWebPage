@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { site } from '../data/site';
+import { ruta } from '../lib/rutas';
 
 // ⚠ PENDIENTE: todo el contenido de esta página está a la espera del texto real.
 const equipo = [
@@ -27,7 +28,7 @@ const valores = [
   <section class="surface-navy relative overflow-hidden pt-40 pb-20 md:pt-48 md:pb-24">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
     <img
-      src="/brand/isotipo.webp"
+      src={ruta('/brand/isotipo.webp')}
       alt=""
       width="256"
       height="282"
@@ -104,10 +105,7 @@ const valores = [
         {
           valores.map(([t, d], i) => (
             <div class="card reveal p-7" data-retraso={i * 70}>
-              <span class="font-display block text-sm font-extrabold text-gold-500">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <h3 class="mt-3 text-[1.02rem] font-bold">{t}</h3>
+              <h3 class="text-[1.02rem] font-bold">{t}</h3>
               <p class="mt-2.5 text-[0.9rem] leading-relaxed text-slate-body">{d}</p>
             </div>
           ))

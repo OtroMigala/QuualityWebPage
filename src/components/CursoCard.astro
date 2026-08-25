@@ -1,5 +1,6 @@
 ---
 import { formatoCOP, type Curso } from '../data/cursos';
+import { ruta } from '../lib/rutas';
 
 interface Props {
   curso: Curso;
@@ -23,7 +24,7 @@ const lecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
   data-categoria={curso.categoria}
 >
   <!-- Cabecera generada por CSS: sin imágenes que descargar -->
-  <a href={`/aula/${curso.slug}`} class="relative block aspect-[16/8] overflow-hidden">
+  <a href={ruta(`/aula/${curso.slug}`)} class="relative block aspect-[16/8] overflow-hidden">
     <div class={`absolute inset-0 bg-gradient-to-br ${gradientes[curso.color]}`}></div>
     <div
       class="absolute inset-0 opacity-[0.16] transition-transform duration-700 group-hover:scale-110"
@@ -32,7 +33,7 @@ const lecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
     >
     </div>
     <img
-      src="/brand/isotipo.webp"
+      src={ruta('/brand/isotipo.webp')}
       alt=""
       width="256"
       height="282"
@@ -58,25 +59,14 @@ const lecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
     </div>
 
     <h3 class="mt-2.5 text-lg leading-snug font-bold">
-      <a href={`/aula/${curso.slug}`} class="transition-colors hover:text-navy-600">{curso.titulo}</a>
+      <a href={ruta(`/aula/${curso.slug}`)} class="transition-colors hover:text-navy-600">{curso.titulo}</a>
     </h3>
 
     <p class="mt-2.5 flex-1 text-[0.9rem] leading-relaxed text-slate-body">{curso.resumen}</p>
 
-    <div class="mt-5 flex items-center gap-4 border-t border-slate-line pt-4 text-[0.8rem] text-slate-muted">
-      <span class="flex items-center gap-1.5">
-        <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
-        </svg>
-        {curso.duracionHoras} horas
-      </span>
-      <span class="flex items-center gap-1.5">
-        <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M4 19.5V6a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" />
-        </svg>
-        {lecciones} lecciones
-      </span>
-    </div>
+    <p class="mt-5 border-t border-slate-line pt-4 text-[0.8rem] text-slate-muted">
+      {curso.duracionHoras} horas · {lecciones} lecciones
+    </p>
 
     <div class="mt-4 flex items-end justify-between gap-3">
       <div>
@@ -94,7 +84,7 @@ const lecciones = curso.temario.reduce((n, m) => n + m.lecciones, 0);
         }
       </div>
       <a
-        href={`/aula/${curso.slug}`}
+        href={ruta(`/aula/${curso.slug}`)}
         class="text-sm font-semibold text-navy-600 transition-colors hover:text-gold-500"
       >
         Ver detalle →

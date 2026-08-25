@@ -1,5 +1,6 @@
 ---
 import { whatsappUrl } from '../data/site';
+import { ruta } from '../lib/rutas';
 
 interface Props {
   titulo?: string;
@@ -15,7 +16,7 @@ const {
   <div class="surface-navy reveal relative overflow-hidden rounded-3xl px-7 py-14 text-center md:px-16 md:py-20">
     <div class="grid-lines absolute inset-0" aria-hidden="true"></div>
     <img
-      src="/brand/isotipo.webp"
+      src={ruta('/brand/isotipo.webp')}
       alt=""
       width="256"
       height="282"
@@ -28,7 +29,7 @@ const {
       <p class="mx-auto mt-5 max-w-xl text-[1.02rem] leading-relaxed text-navy-100">{texto}</p>
 
       <div class="mt-9 flex flex-wrap justify-center gap-3.5">
-        <a href="/contacto" class="btn btn-gold">Solicitar diagnóstico</a>
+        <a href={ruta('/contacto')} class="btn btn-gold">Solicitar diagnóstico</a>
         <a href={whatsappUrl()} target="_blank" rel="noopener" class="btn btn-ghost">Escribir por WhatsApp</a>
       </div>
     </div>

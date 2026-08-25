@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { site, whatsappUrl } from '../data/site';
 import { servicios } from '../data/servicios';
+import { ruta } from '../lib/rutas';
 ---
 
 <Base
@@ -124,7 +125,7 @@ import { servicios } from '../data/servicios';
             />
             <span>
               Autorizo el tratamiento de mis datos personales conforme a la
-              <a href="/politica-de-privacidad" class="font-semibold text-navy-600 underline underline-offset-2">
+              <a href={ruta('/politica-de-privacidad')} class="font-semibold text-navy-600 underline underline-offset-2">
                 política de privacidad
               </a>. <span class="text-gold-600">*</span>
             </span>

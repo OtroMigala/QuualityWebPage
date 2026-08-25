@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { ruta } from '../lib/rutas';
 ---
 
 <section class="surface-navy relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20">
@@ -40,13 +41,13 @@ import { site } from '../data/site';
       </p>
 
       <div class="reveal mt-10 flex flex-wrap gap-3.5" data-retraso="240">
-        <a href="/contacto" class="btn btn-gold">
+        <a href={ruta('/contacto')} class="btn btn-gold">
           Solicitar diagnóstico
           <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M5 12h14m-6-6 6 6-6 6" />
           </svg>
         </a>
-        <a href="/aula" class="btn btn-ghost">Ver el Aula Virtual</a>
+        <a href={ruta('/aula')} class="btn btn-ghost">Ver el Aula Virtual</a>
       </div>
 
       <!-- Indicadores de respaldo -->

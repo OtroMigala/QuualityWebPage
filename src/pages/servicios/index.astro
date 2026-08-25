@@ -4,6 +4,7 @@ import CtaBanner from '../../components/CtaBanner.astro';
 import ServicioIcono from '../../components/ServicioIcono.astro';
 import { servicios } from '../../data/servicios';
 import { migas, urlAbsoluta } from '../../data/seo';
+import { ruta } from '../../lib/rutas';
 
 const base = Astro.site ?? new URL('https://qualityac.co');
 const jsonLd = [
@@ -53,17 +54,14 @@ const jsonLd = [
     <div class="space-y-6">
       {
         servicios.map((s, i) => (
-          <article class="card reveal group grid gap-8 p-7 md:grid-cols-[auto_1fr_auto] md:items-center md:p-9" data-retraso={i * 60}>
-            <div class="flex items-center gap-5 md:flex-col md:items-start md:gap-3">
-              <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-navy-50 text-navy-600 transition-colors duration-300 group-hover:bg-navy-600 group-hover:text-gold-400">
-                <ServicioIcono nombre={s.icono} clase="size-7" />
-              </span>
-              <span class="font-display text-2xl font-extrabold text-navy-400">{s.numero}</span>
-            </div>
+          <article class="card reveal group grid gap-x-8 gap-y-6 p-7 md:grid-cols-[auto_1fr_auto] md:items-start md:p-9" data-retraso={i * 60}>
+            <span class="grid size-14 shrink-0 place-items-center rounded-2xl bg-navy-50 text-navy-600 transition-colors duration-300 group-hover:bg-navy-600 group-hover:text-gold-400">
+              <ServicioIcono nombre={s.icono} clase="size-7" />
+            </span>
 
             <div>
               <h2 class="text-[1.2rem] leading-snug font-bold md:text-[1.35rem]">
-                <a href={`/servicios/${s.slug}`} class="transition-colors hover:text-navy-600">
+                <a href={ruta(`/servicios/${s.slug}`)} class="transition-colors hover:text-navy-600">
                   {s.titulo}
                 </a>
               </h2>
@@ -79,7 +77,7 @@ const jsonLd = [
               </ul>
             </div>
 
-            <a href={`/servicios/${s.slug}`} class="btn btn-outline shrink-0 md:self-center">
+            <a href={ruta(`/servicios/${s.slug}`)} class="btn btn-outline shrink-0 md:self-center">
               Ver detalle
               <svg class="size-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path d="M5 12h14m-6-6 6 6-6 6" />

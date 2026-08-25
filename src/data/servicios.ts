@@ -1,6 +1,5 @@
 export interface Servicio {
   slug: string;
-  numero: string;
   titulo: string;
   tituloCorto: string;
   /** Título corto para buscadores: debe caber en 60 caracteres junto con la marca */
@@ -22,7 +21,6 @@ export interface Servicio {
 export const servicios: Servicio[] = [
   {
     slug: 'sistemas-de-gestion',
-    numero: '01',
     titulo: 'Sistemas de Gestión: Calidad, Ambiental y Seguridad y Salud en el Trabajo',
     tituloCorto: 'Sistemas de Gestión',
     tituloSeo: 'Consultoría ISO 9001, ISO 14001 e ISO 45001',
@@ -49,7 +47,6 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'gestion-de-riesgos',
-    numero: '02',
     titulo: 'Gestión de Riesgos Organizacionales',
     tituloCorto: 'Gestión de Riesgos',
     tituloSeo: 'Gestión de riesgos empresariales ISO 31000',
@@ -76,7 +73,6 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'control-interno',
-    numero: '03',
     titulo: 'Control Interno Organizacional',
     tituloCorto: 'Control Interno',
     tituloSeo: 'Control interno organizacional y MECI',
@@ -103,7 +99,6 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'calidad-en-salud',
-    numero: '04',
     titulo: 'Calidad en Instituciones Prestadoras de Servicios de Salud',
     tituloCorto: 'Calidad en Salud',
     tituloSeo: 'Calidad en salud: habilitación, PAMEC y acreditación',
@@ -131,7 +126,6 @@ export const servicios: Servicio[] = [
   },
   {
     slug: 'programas-de-auditoria',
-    numero: '05',
     titulo: 'Planificación, Diseño e Implementación de Programas de Auditoría',
     tituloCorto: 'Programas de Auditoría',
     tituloSeo: 'Programas de auditoría interna ISO 19011',

@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/site';
 import { servicios } from '../data/servicios';
+import { ruta } from '../lib/rutas';
 
 const anio = new Date().getFullYear();
 const redesActivas = site.redes.filter((r) => r.url);
@@ -21,8 +22,8 @@ const iconos: Record<string, string> = {
       <!-- Marca -->
       <div>
         <img
-          src="/brand/logo-dark.webp"
-          srcset="/brand/logo-dark.webp 440w, /brand/logo-dark@2x.webp 880w"
+          src={ruta('/brand/logo-dark.webp')}
+          srcset={`${ruta('/brand/logo-dark.webp')} 440w, ${ruta('/brand/logo-dark@2x.webp')} 880w`}
           sizes="208px"
           alt={site.nombre}
           width="440"
@@ -68,7 +69,7 @@ const iconos: Record<string, string> = {
           {
             servicios.map((s) => (
               <li>
-                <a href={`/servicios/${s.slug}`} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
+                <a href={ruta(`/servicios/${s.slug}`)} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
                   {s.tituloCorto}
                 </a>
               </li>
@@ -84,14 +85,14 @@ const iconos: Record<string, string> = {
           {
             site.nav.map((n) => (
               <li>
-                <a href={n.href} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
+                <a href={ruta(n.href)} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
                   {n.texto}
                 </a>
               </li>
             ))
           }
           <li>
-            <a href="/aula/mi-aprendizaje" class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
+            <a href={ruta('/aula/mi-aprendizaje')} class="text-[0.9rem] text-navy-100 transition-colors hover:text-gold-300">
               Mi aprendizaje
             </a>
           </li>
@@ -126,8 +127,8 @@ const iconos: Record<string, string> = {
     <div class="mt-14 flex flex-col gap-3 border-t border-white/10 pt-7 text-xs text-navy-300 md:flex-row md:items-center md:justify-between">
       <p>© {anio} {site.nombre}. Todos los derechos reservados.</p>
       <p class="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <a href="/politica-de-privacidad" class="transition-colors hover:text-gold-300">Política de privacidad</a>
-        <a href="/terminos" class="transition-colors hover:text-gold-300">Términos y condiciones</a>
+        <a href={ruta('/politica-de-privacidad')} class="transition-colors hover:text-gold-300">Política de privacidad</a>
+        <a href={ruta('/terminos')} class="transition-colors hover:text-gold-300">Términos y condiciones</a>
         <span class="text-navy-400">Actividad registrada: edición de libros (CIIU 5811)</span>
       </p>
     </div>

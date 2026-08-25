@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { cursos } from '../../data/cursos';
+import { ruta } from '../../lib/rutas';
 
 /**
  * MAQUETA del panel del estudiante.
@@ -71,7 +72,7 @@ const horasTotales = inscritos.reduce((n, i) => n + Math.round((i.curso.duracion
             <div>
               <p class="text-[0.75rem] font-semibold tracking-wide text-gold-600 uppercase">{item.curso.categoria}</p>
               <h3 class="mt-2 text-[1.08rem] leading-snug font-bold">
-                <a href={`/aula/${item.curso.slug}`} class="transition-colors hover:text-navy-600">
+                <a href={ruta(`/aula/${item.curso.slug}`)} class="transition-colors hover:text-navy-600">
                   {item.curso.titulo}
                 </a>
               </h3>
@@ -91,7 +92,7 @@ const horasTotales = inscritos.reduce((n, i) => n + Math.round((i.curso.duracion
               </p>
             </div>
 
-            <a href={`/aula/${item.curso.slug}`} class="btn btn-navy shrink-0">
+            <a href={ruta(`/aula/${item.curso.slug}`)} class="btn btn-navy shrink-0">
               Continuar
               <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path d="M5 12h14m-6-6 6 6-6 6" />
@@ -139,7 +140,7 @@ const horasTotales = inscritos.reduce((n, i) => n + Math.round((i.curso.duracion
         }
 
         <a
-          href="/aula"
+          href={ruta('/aula')}
           class="reveal grid place-items-center rounded-[1rem] border border-dashed border-navy-200 bg-white p-8 text-center transition-colors hover:border-navy-400 hover:bg-navy-50/40"
           data-retraso={completados.length * 70}
         >

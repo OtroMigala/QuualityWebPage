@@ -1,0 +1,62 @@
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Permite lanzarlo a mano desde la pestaña Actions
+  workflow_dispatch:
+
+# Permisos que necesita el despliegue de Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si se empujan dos commits seguidos, se cancela el despliegue anterior
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    name: Construir
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir el sitio
+        # DESPLIEGUE=pages hace que Astro use la base /QuualityWebPage.
+        # Sin esa variable el sitio se construye para la raíz del dominio.
+        run: npm run build
+        env:
+          DESPLIEGUE: pages
+
+      - name: Revisar el SEO
+        run: npm run seo
+
+      - name: Subir el resultado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  desplegar:
+    name: Desplegar
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Publicar en Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4

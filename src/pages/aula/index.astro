@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CursoCard from '../../components/CursoCard.astro';
 import { cursos, categorias } from '../../data/cursos';
 import { catalogoLd, migas } from '../../data/seo';
+import { ruta } from '../../lib/rutas';
 
 const base = Astro.site ?? new URL('https://qualityac.co');
 const jsonLd = [
@@ -38,7 +39,7 @@ const jsonLd = [
 
         <div class="reveal mt-9 flex flex-wrap gap-3.5" data-retraso="180">
           <a href="#catalogo" class="btn btn-gold">Ver catálogo</a>
-          <a href="/aula/mi-aprendizaje" class="btn btn-ghost">Ingresar a mi cuenta</a>
+          <a href={ruta('/aula/mi-aprendizaje')} class="btn btn-ghost">Ingresar a mi cuenta</a>
         </div>
       </div>
 
@@ -140,7 +141,7 @@ const jsonLd = [
           Adaptamos cualquier curso al contexto de su organización y lo dictamos exclusivamente para su equipo, sobre
           sus propios procesos y documentos. Modalidad presencial en sitio o virtual en vivo.
         </p>
-        <a href="/contacto" class="btn btn-navy mt-8">Cotizar formación cerrada</a>
+        <a href={ruta('/contacto')} class="btn btn-navy mt-8">Cotizar formación cerrada</a>
       </div>
 
       <ul class="space-y-4">
@@ -151,12 +152,7 @@ const jsonLd = [
             'Horarios acordados con su operación',
             'Informe de resultados por participante',
           ].map((t) => (
-            <li class="flex gap-3">
-              <svg class="mt-0.5 size-5 shrink-0 text-gold-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <path d="m5 13 4 4L19 7" />
-              </svg>
-              <span class="text-[0.94rem] leading-relaxed text-slate-body">{t}</span>
-            </li>
+            <li class="border-l-2 border-gold-400/50 pl-4 text-[0.94rem] leading-relaxed text-slate-body">{t}</li>
           ))
         }
       </ul>
