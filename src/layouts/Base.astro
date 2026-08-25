@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import WhatsAppFab from '../components/WhatsAppFab.astro';
 import { site } from '../data/site';
 import { organizacion } from '../data/seo';
-import { ruta } from '../lib/rutas';
+import { ruta, sinBase } from '../lib/rutas';
 
 interface Props {
   titulo: string;
@@ -29,7 +29,10 @@ const {
   jsonLd = [],
 } = Astro.props;
 
-const esHome = Astro.url.pathname === '/';
+// sinBase: en un subdirectorio el pathname del home es '/QuualityWebPage/',
+// no '/'. Sin descontar la base, el home no se reconocía como tal y el título
+// terminaba repitiendo el nombre de la empresa dos veces.
+const esHome = sinBase(Astro.url.pathname) === '/';
 
 /**
  * Google corta el título alrededor de los 60 caracteres. Si el nombre completo

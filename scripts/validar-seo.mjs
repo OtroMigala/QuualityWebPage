@@ -37,6 +37,10 @@ for (const f of archivos) {
   if (!canonica) errores.push('sin canonica');
   if (!titulo) errores.push('sin titulo');
   if (titulo.length > 65) errores.push(`titulo ${titulo.length} car (>65)`);
+  // El nombre de la empresa repetido delata un fallo al componer el título
+  if ((titulo.match(/Quality Consulting Group/g) ?? []).length > 1) {
+    errores.push('la marca aparece dos veces en el titulo');
+  }
   if (!desc) errores.push('sin descripcion');
   if (desc.length > 165) errores.push(`descripcion ${desc.length} car (>165)`);
   if (h1 !== 1) errores.push(`${h1} etiquetas h1`);
