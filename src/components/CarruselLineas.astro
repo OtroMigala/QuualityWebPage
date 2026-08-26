@@ -1,0 +1,269 @@
+---
+import ServicioIcono from './ServicioIcono.astro';
+import { lineas, areas } from '../data/servicios';
+import { ruta } from '../lib/rutas';
+
+/**
+ * Carrusel de las cuatro líneas de servicio.
+ *
+ * El desplazamiento lo hace el navegador con scroll-snap, así que el arrastre
+ * táctil, el trackpad y la rueda funcionan sin código. El JavaScript solo se
+ * ocupa de los botones, los puntos y el avance automático.
+ */
+const total = lineas.length;
+---
+
+<section id="servicios" class="wrap scroll-mt-28 py-20 md:py-28">
+  <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+    <div class="max-w-2xl">
+      <h2 class="reveal text-[clamp(1.7rem,4vw,2.7rem)] leading-tight font-extrabold" data-retraso="60">
+        Cuatro líneas de servicio
+      </h2>
+      <p class="reveal mt-5 text-[1.02rem] leading-relaxed" data-retraso="120">
+        Cada acompañamiento empieza por entender qué está en juego en su organización. A partir de ahí definimos
+        alcance, tiempos y entregables, sin paquetes cerrados.
+      </p>
+    </div>
+
+    <!-- Controles (en escritorio quedan junto al titular) -->
+    <div class="reveal hidden shrink-0 gap-2.5 md:flex" data-retraso="180">
+      <button
+        type="button"
+        data-anterior
+        class="grid size-11 place-items-center rounded-full border border-slate-line text-navy-600 transition-all hover:border-navy-600 hover:bg-navy-50 disabled:pointer-events-none disabled:opacity-35"
+        aria-label="Línea anterior"
+      >
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-siguiente
+        class="grid size-11 place-items-center rounded-full border border-slate-line text-navy-600 transition-all hover:border-navy-600 hover:bg-navy-50 disabled:pointer-events-none disabled:opacity-35"
+        aria-label="Línea siguiente"
+      >
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="reveal mt-12" data-carrusel data-retraso="200">
+    <div
+      class="pista-carrusel"
+      data-pista
+      role="group"
+      aria-roledescription="carrusel"
+      aria-label="Líneas de servicio"
+      tabindex="0"
+    >
+      {
+        lineas.map((l, i) => (
+          <article
+            data-slide
+            role="group"
+            aria-roledescription="diapositiva"
+            aria-label={`${i + 1} de ${total}: ${l.titulo}`}
+            class:list={[
+              'relative overflow-hidden rounded-[1.15rem] p-8 md:p-12',
+              l.estado === 'en-construccion'
+                ? 'border border-dashed border-navy-200 bg-navy-50/50'
+                : 'border border-slate-line bg-white shadow-[0_18px_44px_-30px_rgb(1_31_117/0.35)]',
+            ]}
+          >
+            <img
+              src={ruta('/brand/isotipo.webp')}
+              alt=""
+              width="256"
+              height="282"
+              loading="lazy"
+              class="pointer-events-none absolute -right-8 -bottom-12 h-52 w-auto opacity-[0.045] md:h-72"
+            />
+
+            <div class="relative grid gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+              <span class="grid size-16 shrink-0 place-items-center rounded-2xl bg-navy-600 text-gold-400 md:size-20">
+                <ServicioIcono nombre={l.icono} clase="size-8 md:size-10" />
+              </span>
+
+              <div class="min-w-0">
+                <h3 class="text-[clamp(1.35rem,3vw,2rem)] leading-tight font-extrabold">{l.titulo}</h3>
+                <p class="mt-2.5 text-[0.8rem] font-semibold tracking-wide text-gold-600 uppercase">{l.tagline}</p>
+                <p class="mt-5 max-w-2xl text-[1.02rem] leading-relaxed text-slate-body">{l.resumen}</p>
+
+                {l.slug === 'consultoria-organizacional' && (
+                  <ul class="mt-6 flex flex-wrap gap-2">
+                    {areas.map((a) => (
+                      <li class="rounded-full border border-slate-line bg-slate-bg px-3 py-1.5 text-[0.78rem] font-medium text-slate-muted">
+                        {a.tituloCorto}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div class="mt-9">
+                  {l.estado === 'en-construccion' ? (
+                    <span class="inline-flex items-center gap-2 text-[0.9rem] font-semibold text-navy-500">
+                      Sección en construcción
+                    </span>
+                  ) : (
+                    <a href={ruta(l.href)} class="btn btn-navy">
+                      {l.slug === 'formacion' ? 'Ir al Aula Virtual' : 'Conocer más'}
+                      <svg
+                        class="size-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14m-6-6 6 6-6 6" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <!-- Puntos y controles móviles -->
+    <div class="mt-8 flex items-center justify-between gap-6">
+      <!-- Botones simples, no role=tab: no hay paneles de pestaña que controlar
+           y anunciarlos como pestañas confundiría a un lector de pantalla. -->
+      <div class="flex items-center gap-2">
+        {
+          lineas.map((l, i) => (
+            <button
+              type="button"
+              data-punto
+              class="punto cursor-pointer"
+              aria-current={i === 0 ? 'true' : 'false'}
+              aria-label={`Ir a ${l.tituloCorto}`}
+            />
+          ))
+        }
+      </div>
+
+      <div class="flex shrink-0 gap-2.5 md:hidden">
+        <button
+          type="button"
+          data-anterior
+          class="grid size-11 place-items-center rounded-full border border-slate-line text-navy-600 transition-all disabled:pointer-events-none disabled:opacity-35"
+          aria-label="Línea anterior"
+        >
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          data-siguiente
+          class="grid size-11 place-items-center rounded-full border border-slate-line text-navy-600 transition-all disabled:pointer-events-none disabled:opacity-35"
+          aria-label="Línea siguiente"
+        >
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="sr-only" aria-live="polite" data-anuncio></p>
+  </div>
+</section>
+
+<script>
+  const carrusel = document.querySelector<HTMLElement>('[data-carrusel]');
+
+  if (carrusel) {
+    const pista = carrusel.querySelector<HTMLElement>('[data-pista]')!;
+    const slides = [...carrusel.querySelectorAll<HTMLElement>('[data-slide]')];
+    const puntos = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-punto]')];
+    const anuncio = carrusel.querySelector<HTMLElement>('[data-anuncio]')!;
+    const anteriores = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-anterior]')];
+    const siguientes = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-siguiente]')];
+
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let actual = 0;
+    let temporizador = 0;
+    let autoDetenido = reducido;
+
+    const irA = (i: number) => {
+      const destino = Math.max(0, Math.min(i, slides.length - 1));
+      pista.scrollTo({ left: slides[destino].offsetLeft - pista.offsetLeft, behavior: reducido ? 'auto' : 'smooth' });
+    };
+
+    const pintar = (i: number) => {
+      actual = i;
+      puntos.forEach((p, j) => p.setAttribute('aria-current', String(j === i)));
+      anteriores.forEach((b) => (b.disabled = i === 0));
+      siguientes.forEach((b) => (b.disabled = i === slides.length - 1));
+      anuncio.textContent = `Diapositiva ${i + 1} de ${slides.length}`;
+    };
+
+    // El slide activo se detecta observando cuál ocupa el centro de la pista.
+    // Es más fiable que calcular a partir del scrollLeft.
+    const io = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio > 0.55) {
+            pintar(slides.indexOf(e.target as HTMLElement));
+          }
+        });
+      },
+      { root: pista, threshold: [0.55, 0.9] }
+    );
+    slides.forEach((s) => io.observe(s));
+
+    anteriores.forEach((b) => b.addEventListener('click', () => { detenerAuto(); irA(actual - 1); }));
+    siguientes.forEach((b) => b.addEventListener('click', () => { detenerAuto(); irA(actual + 1); }));
+    puntos.forEach((p, i) => p.addEventListener('click', () => { detenerAuto(); irA(i); }));
+
+    // Flechas del teclado cuando la pista tiene el foco
+    pista.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      detenerAuto();
+      irA(actual + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+
+    // --- Avance automático ---
+    // Se detiene en cuanto la persona toma el control, y no arranca si pidió
+    // menos movimiento. Un carrusel que sigue girando mientras alguien lee
+    // estorba más de lo que aporta.
+    function detenerAuto() {
+      autoDetenido = true;
+      clearInterval(temporizador);
+    }
+
+    function arrancarAuto() {
+      if (autoDetenido) return;
+      clearInterval(temporizador);
+      temporizador = window.setInterval(() => {
+        if (document.hidden) return;
+        irA(actual === slides.length - 1 ? 0 : actual + 1);
+      }, 6500);
+    }
+
+    carrusel.addEventListener('pointerdown', detenerAuto, { once: true });
+    carrusel.addEventListener('mouseenter', () => clearInterval(temporizador));
+    carrusel.addEventListener('mouseleave', arrancarAuto);
+    carrusel.addEventListener('focusin', detenerAuto, { once: true });
+
+    // Solo empieza a girar cuando el carrusel está a la vista
+    const ioSeccion = new IntersectionObserver(
+      (entradas) => {
+        if (entradas[0].isIntersecting) arrancarAuto();
+        else clearInterval(temporizador);
+      },
+      { threshold: 0.35 }
+    );
+    ioSeccion.observe(carrusel);
+
+    pintar(0);
+  }
+</script>

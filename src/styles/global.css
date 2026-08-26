@@ -153,6 +153,46 @@
     background-color: var(--color-navy-50);
   }
 
+  /* --- Carrusel ---
+     Se apoya en scroll-snap nativo: el arrastre táctil y el scroll con
+     trackpad funcionan solos, sin librería ni bucle de animación. */
+  .pista-carrusel {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .pista-carrusel::-webkit-scrollbar {
+    display: none;
+  }
+  .pista-carrusel > * {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex: 0 0 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pista-carrusel {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Punto indicador */
+  .punto {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 999px;
+    background-color: var(--color-slate-line);
+    transition: all 0.35s var(--ease-out-soft);
+  }
+  .punto[aria-current='true'] {
+    width: 1.75rem;
+    background-color: var(--color-gold-400);
+  }
+
   /* --- Tarjeta --- */
   .card {
     background: #fff;
