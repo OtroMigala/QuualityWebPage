@@ -188,13 +188,29 @@ const total = lineas.length;
     const siguientes = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-siguiente]')];
 
     const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /** Cada cuánto pasa a la siguiente línea. */
+    const INTERVALO = 5000;
+    /** Cuánto espera antes de retomar el giro tras una interacción. */
+    const REANUDAR_TRAS = 12000;
+
     let actual = 0;
     let temporizador = 0;
-    let autoDetenido = reducido;
+    let reanudacion = 0;
+    let aLaVista = false;
 
     const irA = (i: number) => {
       const destino = Math.max(0, Math.min(i, slides.length - 1));
-      pista.scrollTo({ left: slides[destino].offsetLeft - pista.offsetLeft, behavior: reducido ? 'auto' : 'smooth' });
+
+      // Se marca el destino de inmediato, sin esperar al observador. Si la
+      // posición dependiera solo de él, un aviso que no llegue deja el carrusel
+      // repitiendo la misma diapositiva: el avance automático calcularía
+      // siempre el siguiente a partir de un índice que nunca cambió.
+      pintar(destino);
+
+      // Sin `behavior`: lo decide el CSS de .pista-carrusel, que ya lo pone en
+      // `auto` bajo prefers-reduced-motion. Pasarlo aquí anularía esa regla.
+      pista.scrollTo({ left: slides[destino].offsetLeft - pista.offsetLeft });
     };
 
     const pintar = (i: number) => {
@@ -207,6 +223,9 @@ const total = lineas.length;
 
     // El slide activo se detecta observando cuál ocupa el centro de la pista.
     // Es más fiable que calcular a partir del scrollLeft.
+    // Corrige la posición cuando la persona arrastra o hace scroll a mano, que
+    // es el único caso en que nadie llamó a irA(). Los saltos por botón o por
+    // avance automático ya se marcan solos.
     const io = new IntersectionObserver(
       (entradas) => {
         entradas.forEach((e) => {
@@ -219,46 +238,65 @@ const total = lineas.length;
     );
     slides.forEach((s) => io.observe(s));
 
-    anteriores.forEach((b) => b.addEventListener('click', () => { detenerAuto(); irA(actual - 1); }));
-    siguientes.forEach((b) => b.addEventListener('click', () => { detenerAuto(); irA(actual + 1); }));
-    puntos.forEach((p, i) => p.addEventListener('click', () => { detenerAuto(); irA(i); }));
+    // --- Avance automático ---
+    // Gira solo, pero nunca compite con quien lo está usando: se pausa mientras
+    // el puntero está encima, mientras el foco está dentro y cuando la pestaña
+    // no se ve. Tras una interacción espera antes de retomar, para no arrebatar
+    // la diapositiva que la persona acaba de elegir.
+
+    function pausar() {
+      clearInterval(temporizador);
+      temporizador = 0;
+    }
+
+    function arrancar() {
+      // No arranca si se pidió menos movimiento, si el carrusel no está a la
+      // vista, si ya está girando o si hay una reanudación en espera.
+      if (reducido || !aLaVista || temporizador || reanudacion) return;
+      temporizador = window.setInterval(() => {
+        if (document.hidden) return;
+        irA(actual === slides.length - 1 ? 0 : actual + 1);
+      }, INTERVALO);
+    }
+
+    function pausarYReanudar() {
+      pausar();
+      clearTimeout(reanudacion);
+      reanudacion = window.setTimeout(() => {
+        reanudacion = 0;
+        arrancar();
+      }, REANUDAR_TRAS);
+    }
+
+    const irManual = (i: number) => {
+      pausarYReanudar();
+      irA(i);
+    };
+
+    anteriores.forEach((b) => b.addEventListener('click', () => irManual(actual - 1)));
+    siguientes.forEach((b) => b.addEventListener('click', () => irManual(actual + 1)));
+    puntos.forEach((p, i) => p.addEventListener('click', () => irManual(i)));
 
     // Flechas del teclado cuando la pista tiene el foco
     pista.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
-      detenerAuto();
-      irA(actual + (e.key === 'ArrowRight' ? 1 : -1));
+      irManual(actual + (e.key === 'ArrowRight' ? 1 : -1));
     });
 
-    // --- Avance automático ---
-    // Se detiene en cuanto la persona toma el control, y no arranca si pidió
-    // menos movimiento. Un carrusel que sigue girando mientras alguien lee
-    // estorba más de lo que aporta.
-    function detenerAuto() {
-      autoDetenido = true;
-      clearInterval(temporizador);
-    }
+    // Arrastre táctil o con trackpad: también cuenta como tomar el control
+    pista.addEventListener('pointerdown', pausarYReanudar);
 
-    function arrancarAuto() {
-      if (autoDetenido) return;
-      clearInterval(temporizador);
-      temporizador = window.setInterval(() => {
-        if (document.hidden) return;
-        irA(actual === slides.length - 1 ? 0 : actual + 1);
-      }, 6500);
-    }
+    carrusel.addEventListener('mouseenter', pausar);
+    carrusel.addEventListener('mouseleave', arrancar);
+    carrusel.addEventListener('focusin', pausarYReanudar);
 
-    carrusel.addEventListener('pointerdown', detenerAuto, { once: true });
-    carrusel.addEventListener('mouseenter', () => clearInterval(temporizador));
-    carrusel.addEventListener('mouseleave', arrancarAuto);
-    carrusel.addEventListener('focusin', detenerAuto, { once: true });
-
-    // Solo empieza a girar cuando el carrusel está a la vista
+    // Solo gira mientras el carrusel está a la vista
     const ioSeccion = new IntersectionObserver(
       (entradas) => {
-        if (entradas[0].isIntersecting) arrancarAuto();
-        else clearInterval(temporizador);
+        aLaVista = entradas[0].isIntersecting;
+        if (aLaVista) arrancar();
+        else pausar();
       },
       { threshold: 0.35 }
     );
